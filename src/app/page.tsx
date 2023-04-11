@@ -1,133 +1,152 @@
 "use client";
+import Navbar from "@/components/navbar";
+import SideNav from "@/components/sidenav";
+import { Listbox, Transition } from "@headlessui/react";
+import {
+  HashtagIcon,
+  ArchiveBoxIcon,
+  CheckIcon,
+  ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
+import { Fragment, useState } from "react";
 
-import { Inter } from "next/font/google";
-import { useSupabase } from "./supabase-provider";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { User } from "@supabase/supabase-js";
-import { Database } from "./lib/database.types";
+const types = [
+  { name: "💭 Text", value: "text" },
+  { name: "🖼️ Image", value: "image" },
+  { name: "🔗 URL", value: "url" },
+];
 
-const inter = Inter({ subsets: ["latin"] });
-
-interface Particle {
-  content: string;
-  created_at: string;
-  description: string | null;
-  id: string;
-  is_archived: boolean;
-  is_public: boolean;
-  title: string | null;
-  type: number;
-  updated_at: string;
-  user_id: string;
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
 }
 
-export default function Home() {
-  const { supabase } = useSupabase();
-  const [user, setUser] = useState<User | null>(null);
-  const [particles, setParticles] = useState<Particle[]>([]);
-
-  async function getUser() {
-    const { data } = await supabase.auth.getSession();
-    setUser(data.session?.user || null);
-  }
-
-  async function getParticles() {
-    if (!user) {
-      return;
-    }
-    supabase
-      .from("particle")
-      .select("*")
-      .then((res) => {
-        let particles: Particle[] = [];
-        res.data?.map((particle) => {
-          particles.push(particle);
-        });
-        setParticles(particles);
-      });
-  }
-
-  useEffect(() => {
-    getUser();
-  }, [supabase]);
-
-  useEffect(() => {
-    if (!user) {
-      setParticles([]);
-      return;
-    }
-    getParticles();
-  }, [supabase, user]);
+export default function Example() {
+  const [selectedType, setSelectedType] = useState(types[0]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        {user ? (
-          <p>
-            Welcome, {user.email}!{" "}
-            <button
-              className="underline"
-              onClick={async () => {
-                const { error } = await supabase.auth.signOut();
-                setUser(null);
-                if (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Sign out
-            </button>
-          </p>
-        ) : (
-          <p>
-            <Link className="underline" href={"login"}>
-              Login
-            </Link>
-            <br />
-            <button
-              className="underline"
-              onClick={async () => {
-                const { error } = await supabase.auth.signInWithOAuth({
-                  provider: "google",
-                });
-                if (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Login with Google
-            </button>
-          </p>
-        )}
-        {particles.map((particle) => (
-          <div key={particle.id} className="m-3">
-            <p className="text-xl">{particle.title || "Untitled"}</p>
-            <p className="text-sm">{particle.description}</p>
-            <p>{particle.content}</p>
+    <>
+      <div className="min-h-full">
+        <Navbar />
+
+        <main>
+          <div className="container mx-auto py-6">
+            <div className="flex flex-row">
+              <div className="hidden md:block w-1/4">
+                {/* {Array.from({ length: 100 }, (v, k) => k).map((number) => (
+                  <p key={number}>Sidebar {number}</p>
+                ))} */}
+                <SideNav />
+              </div>
+              <div className="mx-auto w-full md:w-3/4 sm:mx-4">
+                <div className="rounded-md border-2 mb-4">
+                  <p className="text-gray-500 italic my-4 mx-2">
+                    Insert new particle...
+                  </p>
+                  <div className="flex items-center justify-between p-2">
+                    <div className="flex">
+                      <Listbox value={selectedType} onChange={setSelectedType}>
+                        {({ open }) => (
+                          <>
+                            <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
+                              Type
+                            </Listbox.Label>
+                            <div className="relative mt-2">
+                              <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                                <span className="flex items-center">
+                                  <span className="ml-3 block truncate">
+                                    {selectedType.name}
+                                  </span>
+                                </span>
+                                <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                                  <ChevronUpDownIcon
+                                    className="h-5 w-5 text-gray-400"
+                                    aria-hidden="true"
+                                  />
+                                </span>
+                              </Listbox.Button>
+
+                              <Transition
+                                show={open}
+                                as={Fragment}
+                                leave="transition ease-in duration-100"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                              >
+                                <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                  {types.map((type) => (
+                                    <Listbox.Option
+                                      key={type.value}
+                                      className={({ active }) =>
+                                        classNames(
+                                          active
+                                            ? "bg-indigo-600 text-white"
+                                            : "text-gray-900",
+                                          "relative cursor-default select-none py-2 pl-3 pr-9"
+                                        )
+                                      }
+                                      value={type}
+                                    >
+                                      {({ selected, active }) => (
+                                        <>
+                                          <div className="flex items-center">
+                                            <span
+                                              className={classNames(
+                                                selected
+                                                  ? "font-semibold"
+                                                  : "font-normal",
+                                                "ml-3 block truncate"
+                                              )}
+                                            >
+                                              {type.name}
+                                            </span>
+                                          </div>
+
+                                          {selected ? (
+                                            <span
+                                              className={classNames(
+                                                active
+                                                  ? "text-white"
+                                                  : "text-indigo-600",
+                                                "absolute inset-y-0 right-0 flex items-center pr-4"
+                                              )}
+                                            >
+                                              <CheckIcon
+                                                className="h-5 w-5"
+                                                aria-hidden="true"
+                                              />
+                                            </span>
+                                          ) : null}
+                                        </>
+                                      )}
+                                    </Listbox.Option>
+                                  ))}
+                                </Listbox.Options>
+                              </Transition>
+                            </div>
+                          </>
+                        )}
+                      </Listbox>
+                    </div>
+                    <div className="flex">
+                      <button>Save</button>
+                    </div>
+                  </div>
+                </div>
+                <div className="columns-3xs gap-3">
+                  {Array.from({ length: 100 }, (v, k) => k).map((number) => (
+                    <div
+                      key={number}
+                      className="w-full bg-slate-200 hover:bg-slate-300"
+                    >
+                      <p>{number} random text</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
-        ))}
-        {user && (
-          <button
-            className="border-2 border-white rounded-md p-2"
-            onClick={async () => {
-              const { error } = await supabase.from("particle").insert({
-                content: "Test particle content here",
-                type: 2,
-                user_id: user.id,
-                description: "Test description",
-                title: "Test",
-              });
-              getParticles();
-              if (error) {
-                console.log(error);
-              }
-            }}
-          >
-            Add Particle
-          </button>
-        )}
+        </main>
       </div>
-    </main>
+    </>
   );
 }
