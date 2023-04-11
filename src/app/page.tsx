@@ -2,12 +2,7 @@
 import Navbar from "@/components/navbar";
 import SideNav from "@/components/sidenav";
 import { Listbox, Transition } from "@headlessui/react";
-import {
-  HashtagIcon,
-  ArchiveBoxIcon,
-  CheckIcon,
-  ChevronUpDownIcon,
-} from "@heroicons/react/24/outline";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 
 const types = [
@@ -32,9 +27,6 @@ export default function Example() {
           <div className="container mx-auto py-6">
             <div className="flex flex-row">
               <div className="hidden md:block w-1/4">
-                {/* {Array.from({ length: 100 }, (v, k) => k).map((number) => (
-                  <p key={number}>Sidebar {number}</p>
-                ))} */}
                 <SideNav />
               </div>
               <div className="mx-auto w-full md:w-3/4 sm:mx-4">

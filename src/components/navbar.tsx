@@ -41,30 +41,11 @@ export default function Navbar() {
                     {/* <img
                         className="h-8 w-8"
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
+                        alt="Particle"
                       /> */}
                     <span className="sr-only">Logo</span>📌
                   </div>
                 </a>
-                {/* <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-400 text-gray-900"
-                                : "text-gray-700 hover:bg-gray-300 hover:text-gray-900",
-                              "rounded-md px-3 py-2 text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
-                      </div>
-                    </div> */}
               </div>
               <form className="mb-0 flex px-4 w-full sm:w-1/2 md:w-1/3">
                 <div className="relative w-full">
@@ -150,24 +131,6 @@ export default function Navbar() {
           </div>
 
           <Disclosure.Panel className="md:hidden">
-            {/* <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3 border-b border-gray-700">
-                  {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-400 text-gray-900"
-                          : "text-gray-700 hover:bg-gray-300 hover:text-gray-900",
-                        "block rounded-md px-3 py-2 text-base font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
-                </div> */}
             <div className="pb-3 pt-4">
               <div className="flex items-center px-5">
                 <div className="flex-shrink-0">
