@@ -1,5 +1,5 @@
 import "./globals.css";
-import SupabaseProvider from "./supabase-provider";
+import SupabaseProvider from "../lib/supabase-provider";
 
 export const metadata = {
   title: "Particle",
