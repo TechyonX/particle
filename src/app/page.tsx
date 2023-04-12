@@ -14,7 +14,7 @@ export default function Example() {
             <div className="hidden md:block w-1/4">
               <SideNav />
             </div>
-            <div className="mx-auto w-full md:w-3/4 sm:mx-4">
+            <div className="mx-auto w-full md:w-3/4 sm:mx-4 md:mx-0">
               <InputForm />
               <div className="columns-3xs gap-3 py-8">
                 {Array.from({ length: 100 }, (v, k) => k).map((number) => (
