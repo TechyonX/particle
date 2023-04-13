@@ -1,5 +1,3 @@
-"use client";
-
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
@@ -7,10 +5,9 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { classNames } from "@/utils/misc";
-import { useSupabase } from "@/lib/supabase-provider";
-import { useAuth } from "@/utils/hooks";
 import Link from "next/link";
+import { classNames } from "@/utils/misc";
+import { useAuth } from "@/utils/hooks";
 
 const userNavigation = [
   { name: "Profile", href: "#" },
@@ -18,8 +15,7 @@ const userNavigation = [
 ];
 
 export default function Navbar() {
-  const { supabase } = useSupabase();
-  const { session, profile } = useAuth();
+  const { auth, session, profile } = useAuth();
 
   return (
     <Disclosure
@@ -120,7 +116,7 @@ export default function Navbar() {
                               {({ active }) => (
                                 <a
                                   href="#"
-                                  onClick={() => supabase.auth.signOut()}
+                                  onClick={() => auth.signOut()}
                                   className={classNames(
                                     active
                                       ? "bg-gray-100 dark:bg-gray-800"
@@ -206,7 +202,7 @@ export default function Navbar() {
                   <Disclosure.Button
                     as="a"
                     onClick={() => {
-                      supabase.auth.signOut();
+                      auth.signOut();
                     }}
                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-300 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100"
                   >

@@ -20,7 +20,7 @@ export default function Page() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
     });
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };
   const loginWithGithub = async () => {
@@ -28,7 +28,7 @@ export default function Page() {
     await supabase.auth.signInWithOAuth({
       provider: "github",
     });
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };
   const loginWithMagicLink = async () => {

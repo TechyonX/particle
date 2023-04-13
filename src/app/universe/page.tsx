@@ -1,5 +1,6 @@
 "use client";
 
+import AuthLayout from "@/components/auth-layout";
 import InputForm from "@/components/input-form";
 import ParticleCard from "@/components/particle";
 import SideNav from "@/components/sidenav";
@@ -7,10 +8,14 @@ import { Database } from "@/lib/database.types";
 import { useSupabase } from "@/lib/supabase-provider";
 import { useAuth } from "@/utils/hooks";
 import { useEffect, useState } from "react";
+import { useHandleOpenCommandPalette } from "react-cmdk";
 
-export default function ParticlesHome() {
+export default function Universe() {
   const { supabase } = useSupabase();
   const { session } = useAuth();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useHandleOpenCommandPalette(setIsOpen);
   const [particles, setParticles] = useState<
     Database["public"]["Tables"]["particle"]["Row"][]
   >([]);
@@ -98,20 +103,22 @@ export default function ParticlesHome() {
     }
   }, [session, supabase]);
   return (
-    <div className="container mx-auto py-6 flex-1">
-      <div className="flex flex-row">
-        <div className="hidden md:block w-1/4">
-          <SideNav />
-        </div>
-        <div className="mx-auto w-full md:w-3/4 sm:mx-4 md:mx-0">
-          <InputForm />
-          <div className="columns-1 gap-3 py-8">
-            {particles.map((particle) => (
-              <ParticleCard key={particle.id} particle={particle} />
-            ))}
+    <AuthLayout>
+      <div className="container mx-auto py-6 flex-1">
+        <div className="flex flex-row">
+          <div className="hidden md:block w-1/4">
+            <SideNav />
+          </div>
+          <div className="mx-auto w-full md:w-3/4 sm:mx-4 md:mx-0">
+            <InputForm />
+            <div className="columns-1 gap-3 py-8">
+              {particles.map((particle) => (
+                <ParticleCard key={particle.id} particle={particle} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </AuthLayout>
   );
 }

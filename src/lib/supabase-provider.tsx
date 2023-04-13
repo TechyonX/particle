@@ -24,8 +24,18 @@ export default function SupabaseProvider({
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-      router.refresh();
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      switch (event) {
+        case "SIGNED_IN":
+          router.push("/universe");
+          break;
+        case "SIGNED_OUT":
+          router.push("/login");
+          break;
+        default:
+          router.refresh();
+          break;
+      }
     });
 
     return () => {
