@@ -1,34 +1,33 @@
 "use client";
-import InputForm from "@/components/input-form";
+
 import Navbar from "@/components/navbar";
-import SideNav from "@/components/sidenav";
+import ParticlesHome from "@/components/particles-home";
+import { useAuth } from "@/utils/hooks";
+import Link from "next/link";
 
-export default function Example() {
+export default function HomePage() {
+  const { session } = useAuth();
   return (
-    <div className="min-h-full">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-
-      <main>
-        <div className="container mx-auto py-6">
-          <div className="flex flex-row">
-            <div className="hidden md:block w-1/4">
-              <SideNav />
-            </div>
-            <div className="mx-auto w-full md:w-3/4 sm:mx-4 md:mx-0">
-              <InputForm />
-              <div className="columns-3xs gap-3 py-8">
-                {Array.from({ length: 100 }, (v, k) => k).map((number) => (
-                  <div
-                    key={number}
-                    className="w-full bg-slate-200 hover:bg-slate-300"
-                  >
-                    <p>{number} random text</p>
+      <main className="flex flex-1 h-full flex-col items-center justify-center">
+        {session ? (
+          <ParticlesHome />
+        ) : (
+          <div className="relative text-gray-800 dark:text-gray-200 text-center py-16">
+            <h1 className="text-5xl font-bold">Particle</h1>
+            <p className="text-xl">Build your own universe!</p>
+            <div className="mt-4">
+              <Link href="/login">
+                <div className="rounded-md p-1 text-lg bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-emerald-700 via-emerald-600 to-cyan-700 hover:to-emerald-700 hover:via-emerald-600 hover:from-cyan-700 transform hover:scale-105 transition ease-in-out">
+                  <div className="rounded-md h-full w-full px-8 py-4 bg-gray-900/90">
+                  Get started
                   </div>
-                ))}
-              </div>
+                </div>
+              </Link>
             </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );

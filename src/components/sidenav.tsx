@@ -18,7 +18,7 @@ const tags = [
 
 export default function SideNav() {
   return (
-    <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 dark:border-gray-700 pt-5 pb-4">
+    <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 dark:border-gray-700 pt-5 pb-4 mr-4">
       <div className="flex flex-grow flex-col">
         <nav className="flex-1 space-y-8 px-2" aria-label="Sidebar">
           <div className="space-y-1">

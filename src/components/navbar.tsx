@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { classNames } from "@/utils/misc";
 import { useSupabase } from "@/lib/supabase-provider";
-import { useSupabaseSession, useUserProfile } from "@/utils/hooks";
+import { useAuth } from "@/utils/hooks";
 import Link from "next/link";
 
 const userNavigation = [
@@ -19,8 +19,7 @@ const userNavigation = [
 
 export default function Navbar() {
   const { supabase } = useSupabase();
-  const session = useSupabaseSession();
-  const userProfile = useUserProfile();
+  const { session, profile } = useAuth();
 
   return (
     <Disclosure
@@ -91,8 +90,8 @@ export default function Navbar() {
                             <Menu.Item>
                               <div className="px-4 py-2">
                                 <div className="text-base font-medium leading-none text-gray-900 dark:text-gray-100 pb-1">
-                                  {userProfile?.first_name ?? "User"}{" "}
-                                  {userProfile?.last_name ?? ""}
+                                  {profile?.first_name ?? "User"}{" "}
+                                  {profile?.last_name ?? ""}
                                 </div>
                                 <div className="text-sm font-medium leading-none text-gray-700 dark:text-gray-300">
                                   {session.user.email}
@@ -119,7 +118,8 @@ export default function Navbar() {
                             ))}
                             <Menu.Item>
                               {({ active }) => (
-                                <a href="#"
+                                <a
+                                  href="#"
                                   onClick={() => supabase.auth.signOut()}
                                   className={classNames(
                                     active
@@ -185,8 +185,7 @@ export default function Navbar() {
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium leading-none text-gray-900 dark:text-gray-100">
-                      {userProfile?.first_name ?? "User"}{" "}
-                      {userProfile?.last_name ?? ""}
+                      {profile?.first_name ?? "User"} {profile?.last_name ?? ""}
                     </div>
                     <div className="text-sm font-medium leading-none text-gray-700 dark:text-gray-300">
                       {session?.user.email}

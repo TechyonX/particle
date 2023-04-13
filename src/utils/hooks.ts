@@ -3,9 +3,12 @@ import { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { Database } from "@/lib/database.types";
 
-export function useSupabaseSession() {
+export function useAuth() {
   const { supabase } = useSupabase();
   const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<
+    Database["public"]["Tables"]["profile"]["Row"] | null
+  >(null);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, s) => {
@@ -13,16 +16,6 @@ export function useSupabaseSession() {
     });
   }, [supabase]);
 
-  return session;
-}
-
-export function useUserProfile() {
-  const { supabase } = useSupabase();
-  const session = useSupabaseSession();
-
-  const [user, setUser] = useState<
-    Database["public"]["Tables"]["profile"]["Row"] | null
-  >(null);
   useEffect(() => {
     if (session) {
       supabase
@@ -32,15 +25,13 @@ export function useUserProfile() {
         .limit(1)
         .then(({ data, error }) => {
           if (error) {
-            // console.log(error);
           }
           if (data) {
-            // console.log(data);
-            setUser(data[0]);
+            setProfile(data[0]);
           }
         });
     }
   }, [session, supabase]);
 
-  return user;
+  return { session, profile };
 }
