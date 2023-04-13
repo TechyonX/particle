@@ -12,7 +12,6 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  console.log("middleware", req.nextUrl.pathname);
   if (session) {
     switch (req.nextUrl.pathname) {
       case "/login":

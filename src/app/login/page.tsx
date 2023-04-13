@@ -35,6 +35,9 @@ export default function Page() {
     setLoading(true);
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
+      options: {
+        redirectTo: window.location.origin,
+      },
     });
     if (!handleError(error)) {
       setAlert({
@@ -52,6 +55,9 @@ export default function Page() {
     setLoading(true);
     const { data, error } = await supabase.auth.signInWithOtp({
       email: email,
+      options: {
+        emailRedirectTo: window.location.origin,
+      },
     });
     await new Promise((resolve) => setTimeout(resolve, 1000));
     if (!handleError(error)) {
