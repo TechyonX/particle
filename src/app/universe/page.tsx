@@ -8,14 +8,11 @@ import { Database } from "@/lib/database.types";
 import { useSupabase } from "@/lib/supabase-provider";
 import { useAuth } from "@/utils/hooks";
 import { useEffect, useState } from "react";
-import { useHandleOpenCommandPalette } from "react-cmdk";
 
 export default function Universe() {
   const { supabase } = useSupabase();
   const { session } = useAuth();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  useHandleOpenCommandPalette(setIsOpen);
   const [particles, setParticles] = useState<
     Database["public"]["Tables"]["particle"]["Row"][]
   >([]);
