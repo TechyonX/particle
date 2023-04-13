@@ -22,8 +22,18 @@ export default function CmdK() {
         id: "universe",
         items: [
           {
+            id: "search",
+            children: "Search particles",
+            icon: "MagnifyingGlassIcon",
+            closeOnSelect: false,
+            onClick: () => {
+              setPage("particles");
+            },
+            keywords: ["list", "particles", "spawned", "search", "find"],
+          },
+          {
             id: "home",
-            children: "Observe",
+            children: "Home",
             icon: "HomeIcon",
             href: "/universe",
             keywords: ["home", "observe", "list"],
@@ -96,8 +106,32 @@ export default function CmdK() {
         )}
       </CommandPalette.Page>
 
-      <CommandPalette.Page id="particles">
-        {/* List particles here */}
+      <CommandPalette.Page id="particles" searchPrefix={["Particle"]}>
+        <CommandPalette.List key="particles" heading="Particles">
+          <CommandPalette.ListItem
+            key="particle-1"
+            index={0}
+            icon="CircleStackIcon"
+            closeOnSelect={false}
+            href="#"
+          >
+            Title
+          </CommandPalette.ListItem>
+        </CommandPalette.List>
+        <CommandPalette.List key="action" heading="Action">
+          <CommandPalette.ListItem
+            key="back"
+            index={1}
+            icon="ArrowLeftIcon"
+            closeOnSelect={false}
+            onClick={() => {
+              setPage("root");
+            }}
+            keywords={["list", "particles", "spawned"]}
+          >
+            Back
+          </CommandPalette.ListItem>
+        </CommandPalette.List>
       </CommandPalette.Page>
     </CommandPalette>
   );
