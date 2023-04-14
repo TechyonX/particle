@@ -5,7 +5,7 @@ import CommandPalette, {
   getItemIndex,
   useHandleOpenCommandPalette,
 } from "react-cmdk";
-import { useAuth } from "@/utils/hooks";
+import { useAuth, useTheme } from "@/utils/hooks";
 
 export default function CmdK({
   isOpen,
@@ -18,6 +18,7 @@ export default function CmdK({
   const [search, setSearch] = useState("");
   // const [isOpen, setIsOpen] = useState(false);
   const { auth } = useAuth();
+  const { setTheme } = useTheme();
 
   useHandleOpenCommandPalette(setIsOpen);
 
@@ -73,7 +74,7 @@ export default function CmdK({
             children: "Dark mode",
             icon: "MoonIcon",
             iconType: "outline",
-            onClick: () => {},
+            onClick: () => setTheme("dark"),
             keywords: ["theme", "dark", "mode"],
           },
           {
@@ -81,7 +82,7 @@ export default function CmdK({
             children: "Light mode",
             icon: "SunIcon",
             iconType: "outline",
-            onClick: () => {},
+            onClick: () => setTheme("light"),
             keywords: ["theme", "light", "mode"],
           },
         ],

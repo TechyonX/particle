@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${rubik.variable} h-full dark bg-gray-50 dark:bg-gray-900`}
+      className={`${rubik.variable} h-full bg-gray-50 dark:bg-gray-900`}
     >
       <body className="min-h-full bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
         <SupabaseProvider>{children}</SupabaseProvider>

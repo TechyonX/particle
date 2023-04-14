@@ -38,3 +38,27 @@ export function useAuth() {
 
   return { auth, session, profile };
 }
+
+export function useTheme() {
+  const initialTheme: "light" | "dark" = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches
+    ? "dark"
+    : "light";
+
+  const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
+
+  useEffect(() => {
+    const theme = localStorage.getItem("theme") || initialTheme;
+    document.documentElement.classList.add(theme);
+    setTheme(theme as "light" | "dark");
+  }, [initialTheme]);
+
+  useEffect(() => {
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  return { theme, setTheme };
+}
