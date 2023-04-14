@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -16,11 +16,12 @@ const userNavigation = [
 ];
 
 export default function Navbar() {
+  const [isCmdKOpen, setIsCmdKOpen] = useState(false);
   const { auth, session, profile } = useAuth();
 
   return (
     <>
-      <CmdK />
+      <CmdK isOpen={isCmdKOpen} setIsOpen={setIsCmdKOpen} />
       <Disclosure
         as="nav"
         className="sticky top-0 backdrop-blur-md from-gray-300/50 to-gray-100/50 bg-gradient-to-r border-gray-400/10 border-b z-50 dark:from-gray-700/50 dark:to-gray-800/50"
@@ -48,15 +49,21 @@ export default function Navbar() {
                 </div>
                 {session ? (
                   <>
-                    <form className="mb-0 flex px-4 w-full sm:mx-16 md:mx-auto md:max-w-xl lg:mx-auto">
+                    <form
+                      className="mb-0 flex px-4 w-full sm:mx-16 md:mx-auto md:max-w-xl lg:mx-auto"
+                      onClick={() => setIsCmdKOpen(true)}
+                    >
                       <div className="relative w-full">
                         <input
-                          className="h-10 rounded-lg w-full border border-gray-400/30 pr-10 text-sm placeholder-gray-400 focus:z-10 bg-white/40 focus:bg-white dark:border-gray-700/30 dark:bg-black/40 dark:text-white"
-                          placeholder="Search..."
+                          className="h-10 cursor-pointer rounded-lg w-full border border-gray-400/30 pr-10 text-sm placeholder-gray-400 focus:z-10 bg-white/40 focus:bg-white dark:border-gray-700/30 dark:bg-black/40 dark:text-white"
+                          placeholder="Search for particles or actions... (Cmd+K)"
+                          readOnly={true}
+                          disabled={true}
                           type="text"
                         />
                         <button
-                          type="submit"
+                          type="button"
+                          onClick={() => setIsCmdKOpen(true)}
                           className="absolute inset-y-0 right-0 rounded-r-lg p-2 text-gray-600 dark:text-gray-400"
                         >
                           <span className="sr-only">Submit Search</span>

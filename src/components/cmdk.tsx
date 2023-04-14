@@ -1,5 +1,5 @@
-import "react-cmdk/dist/cmdk.css";
-import { useState } from "react";
+import "@/styles/cmdk.css";
+import { Dispatch, SetStateAction, useState } from "react";
 import CommandPalette, {
   filterItems,
   getItemIndex,
@@ -7,10 +7,16 @@ import CommandPalette, {
 } from "react-cmdk";
 import { useAuth } from "@/utils/hooks";
 
-export default function CmdK() {
+export default function CmdK({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const [page, setPage] = useState<"root" | "particles">("root");
   const [search, setSearch] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const { auth } = useAuth();
 
   useHandleOpenCommandPalette(setIsOpen);
@@ -22,9 +28,10 @@ export default function CmdK() {
         id: "universe",
         items: [
           {
-            id: "search",
+            id: "universe.search",
             children: "Search particles",
             icon: "MagnifyingGlassIcon",
+            iconType: "outline",
             closeOnSelect: false,
             onClick: () => {
               setPage("particles");
@@ -32,18 +39,50 @@ export default function CmdK() {
             keywords: ["list", "particles", "spawned", "search", "find"],
           },
           {
-            id: "home",
-            children: "Home",
+            id: "universe.new",
+            children: "Spawn new particle",
+            icon: "PlusCircleIcon",
+            iconType: "outline",
+            href: "#",
+            keywords: ["new", "spawn", "particle", "create"],
+          },
+          {
+            id: "universe.home",
+            children: "Go to Home",
             icon: "HomeIcon",
+            iconType: "outline",
             href: "/universe",
             keywords: ["home", "observe", "list"],
           },
           {
-            id: "new",
-            children: "Spawn new particle",
-            icon: "PlusCircleIcon",
-            href: "#",
-            keywords: ["new", "spawn", "particle", "create"],
+            id: "universe.archive",
+            children: "Go to Archive",
+            icon: "ArchiveBoxIcon",
+            iconType: "outline",
+            href: "/universe",
+            keywords: ["archive", "observe", "list"],
+          },
+        ],
+      },
+      {
+        heading: "Theme",
+        id: "theme",
+        items: [
+          {
+            id: "theme.dark-mode",
+            children: "Dark mode",
+            icon: "MoonIcon",
+            iconType: "outline",
+            onClick: () => {},
+            keywords: ["theme", "dark", "mode"],
+          },
+          {
+            id: "theme.light-mode",
+            children: "Light mode",
+            icon: "SunIcon",
+            iconType: "outline",
+            onClick: () => {},
+            keywords: ["theme", "light", "mode"],
           },
         ],
       },
@@ -52,23 +91,26 @@ export default function CmdK() {
         id: "user",
         items: [
           {
-            id: "user-profile",
+            id: "user.profile",
             children: "Profile",
             icon: "UserIcon",
+            iconType: "outline",
             href: "#",
             keywords: ["profile", "user", "account"],
           },
           {
-            id: "user-settings",
+            id: "user.settings",
             children: "Settings",
             icon: "Cog6ToothIcon",
+            iconType: "outline",
             href: "#",
             keywords: ["settings", "user", "account", "preferences"],
           },
           {
-            id: "log-out",
-            children: "Log out",
+            id: "user.logout",
+            children: "Logout",
             icon: "ArrowLeftOnRectangleIcon",
+            iconType: "outline",
             onClick: () => {
               auth.signOut();
             },
@@ -87,6 +129,7 @@ export default function CmdK() {
       search={search}
       isOpen={isOpen}
       page={page}
+      placeholder="Search for a particle or action..."
     >
       <CommandPalette.Page id="root">
         {filteredItems.length ? (
@@ -114,6 +157,9 @@ export default function CmdK() {
             icon="CircleStackIcon"
             closeOnSelect={false}
             href="#"
+            onClick={() => {
+              setPage("root");
+            }}
           >
             Title
           </CommandPalette.ListItem>
