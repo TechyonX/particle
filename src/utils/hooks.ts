@@ -40,11 +40,11 @@ export function useAuth() {
 }
 
 export function useTheme() {
-  const initialTheme: "light" | "dark" = window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches
-    ? "dark"
-    : "light";
+  const initialTheme: "light" | "dark" =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
 
   const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
 
