@@ -1,11 +1,49 @@
 import "@/styles/cmdk.css";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import CommandPalette, {
   filterItems,
   getItemIndex,
   useHandleOpenCommandPalette,
 } from "react-cmdk";
 import { useAuth, useTheme } from "@/utils/hooks";
+import SpawnParticleCmdKPage from "@/app/universe/components/particle-cmdk";
+import { classNames } from "@/utils/misc";
+
+export enum StatusType {
+  Ready = "ready",
+  Loading = "loading",
+  Error = "error",
+  Success = "success",
+}
+
+export interface StatusTypeItem {
+  bgColor: string;
+  indicatorColor: string;
+  message: string;
+}
+
+export const statusTypes: { [key: string]: StatusTypeItem } = {
+  [StatusType.Ready]: {
+    bgColor: "bg-gradient-to-r from-particle-400/10 to-particle-100/0",
+    indicatorColor: "bg-particle-400 dark:bg-particle-400",
+    message: "Waiting for your command...",
+  },
+  [StatusType.Loading]: {
+    bgColor: "bg-gradient-to-r from-amber-400/10 to-amber-100/0",
+    indicatorColor: "bg-orange-400 dark:bg-orange-400",
+    message: "Loading...",
+  },
+  [StatusType.Error]: {
+    bgColor: "bg-gradient-to-r from-red-400/10 to-red-100/0",
+    indicatorColor: "bg-red-400 dark:bg-red-400",
+    message: "Error occurred",
+  },
+  [StatusType.Success]: {
+    bgColor: "bg-gradient-to-r from-emerald-400/10 to-emerald-100/0",
+    indicatorColor: "bg-emerald-400 dark:bg-emerald-400",
+    message: "Success",
+  },
+};
 
 export default function CmdK({
   isOpen,
@@ -14,16 +52,24 @@ export default function CmdK({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [page, setPage] = useState<"root" | "particles">("root");
+  const [page, setPage] = useState<"root" | "particles" | "spawn">("root");
   const [search, setSearch] = useState("");
   const [placeholder, setPlaceholder] = useState(
     "Search for a particle or action..."
   );
-  // const [isOpen, setIsOpen] = useState(false);
+  const [status, setStatus] = useState<StatusTypeItem>(
+    statusTypes[StatusType.Error]
+  );
   const { auth, session } = useAuth();
   const { setTheme } = useTheme();
 
   useHandleOpenCommandPalette(setIsOpen);
+
+  useEffect(() => {
+    setPage("root");
+    setSearch("");
+    setStatus(statusTypes[StatusType.Ready]);
+  }, [isOpen]);
 
   const filteredItems = session
     ? filterItems(
@@ -38,7 +84,16 @@ export default function CmdK({
                 icon: "PlusCircleIcon",
                 iconType: "outline",
                 closeOnSelect: false,
-                href: "#",
+                onClick: () => {
+                  setPlaceholder("Type or paste your particle here...");
+                  if (search && search.trim().length > 0) {
+                    setSearch("");
+                  }
+                  navigator.clipboard.readText().then((text) => {
+                    setSearch(text);
+                  });
+                  setPage("spawn");
+                },
                 keywords: ["new", "spawn", "particle", "create"],
               },
               {
@@ -184,6 +239,22 @@ export default function CmdK({
       isOpen={isOpen}
       page={page}
       placeholder={placeholder}
+      footer={
+        <div
+          className={classNames(
+            "flex flex-row py-3 px-3.5 text-gray-700 dark:text-gray-300 text-sm items-center transition-colors",
+            status.bgColor
+          )}
+        >
+          <span
+            className={classNames(
+              "relative inline-flex rounded-full h-2 w-2 mr-3 transition-colors",
+              status.indicatorColor
+            )}
+          ></span>{" "}
+          {status.message}
+        </div>
+      }
     >
       <CommandPalette.Page id="root">
         {filteredItems.length ? (
@@ -203,15 +274,19 @@ export default function CmdK({
         )}
       </CommandPalette.Page>
 
-      <CommandPalette.Page id="particles" searchPrefix={["Particle"]} onEscape={() => setPage("root")}>
+      <CommandPalette.Page
+        id="particles"
+        searchPrefix={["Particle"]}
+        onEscape={() => setPage("root")}
+      >
         <CommandPalette.List key="particles" heading="Particles">
           <CommandPalette.ListItem
             key="particle-1"
             index={0}
             icon="CircleStackIcon"
             closeOnSelect={false}
-            href="#"
             onClick={() => {
+              setStatus(statusTypes[StatusType.Ready]);
               setPage("root");
             }}
           >
@@ -225,14 +300,30 @@ export default function CmdK({
             icon="ArrowLeftIcon"
             closeOnSelect={false}
             onClick={() => {
+              setStatus(statusTypes[StatusType.Ready]);
               setPage("root");
             }}
-            keywords={["list", "particles", "spawned"]}
           >
             Back
           </CommandPalette.ListItem>
         </CommandPalette.List>
       </CommandPalette.Page>
+      <SpawnParticleCmdKPage
+        id="spawn"
+        text={search}
+        onSpawn={() => {
+          setStatus(statusTypes[StatusType.Ready]);
+          setIsOpen(false);
+        }}
+        onBack={() => {
+          setSearch("");
+          setStatus(statusTypes[StatusType.Ready]);
+          setPage("root");
+        }}
+        status={status}
+        setStatus={setStatus}
+        page={page}
+      />
     </CommandPalette>
   );
 }

@@ -416,7 +416,7 @@
 }
 .command-palette .bg-white {
   --tw-bg-opacity: 1;
-  @apply bg-gray-200/80 border border-white/60
+  @apply bg-white/80 border border-white/60
   /* background-color: rgb(255 255 255 / var(--tw-bg-opacity)); */
 }
 .command-palette .bg-gray-200\/50 {
