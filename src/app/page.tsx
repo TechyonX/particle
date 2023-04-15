@@ -4,6 +4,7 @@ import { Intro, IntroFooter } from "@/components/Intro";
 import { StarField } from "@/components/StarField";
 import { useTheme } from "@/utils/hooks";
 import { useEffect, useId, useState } from "react";
+import Articles from "./article.mdx";
 
 function ThemeIcon({ className }: { className: string }) {
   return (
@@ -115,7 +116,7 @@ export default function HomePage() {
       <ThemeToggle />
       <div className="relative flex-auto">
         <main className="space-y-20 py-20 sm:space-y-32 sm:py-32">
-          {/* {children} */}
+          <Articles />
         </main>
       </div>
     </>
