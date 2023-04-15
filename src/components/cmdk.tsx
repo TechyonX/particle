@@ -1,5 +1,12 @@
 import "@/styles/cmdk.css";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import "@/styles/globals.css";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import CommandPalette, {
   filterItems,
   getItemIndex,
@@ -8,6 +15,7 @@ import CommandPalette, {
 import { useAuth, useTheme } from "@/utils/hooks";
 import SpawnParticleCmdKPage from "@/app/universe/components/particle-cmdk";
 import { classNames } from "@/utils/misc";
+import Link from "next/link";
 
 export enum StatusType {
   Ready = "ready",
@@ -89,9 +97,11 @@ export default function CmdK({
                   if (search && search.trim().length > 0) {
                     setSearch("");
                   }
-                  navigator.clipboard.readText().then((text) => {
-                    setSearch(text);
-                  });
+                  try {
+                    navigator.clipboard.readText().then((text) => {
+                      setSearch(text);
+                    });
+                  } catch (e) {}
                   setPage("spawn");
                 },
                 keywords: ["new", "spawn", "particle", "create"],
@@ -113,6 +123,13 @@ export default function CmdK({
                 icon: "HomeIcon",
                 iconType: "outline",
                 href: "/universe",
+                renderLink: (props) =>
+                  props.children &&
+                  props.href && (
+                    <Link {...props} href={props.href} ref={null}>
+                      {props.children}
+                    </Link>
+                  ),
                 keywords: ["home", "observe", "list"],
               },
               {
@@ -120,7 +137,14 @@ export default function CmdK({
                 children: "Go to Archive",
                 icon: "ArchiveBoxIcon",
                 iconType: "outline",
-                href: "/universe",
+                href: "/universe/archive",
+                renderLink: (props) =>
+                  props.children &&
+                  props.href && (
+                    <Link {...props} href={props.href} ref={null}>
+                      {props.children}
+                    </Link>
+                  ),
                 keywords: ["archive", "observe", "list"],
               },
             ],
@@ -151,22 +175,22 @@ export default function CmdK({
             heading: "User",
             id: "user",
             items: [
-              {
-                id: "user.profile",
-                children: "Profile",
-                icon: "UserIcon",
-                iconType: "outline",
-                href: "#",
-                keywords: ["profile", "user", "account"],
-              },
-              {
-                id: "user.settings",
-                children: "Settings",
-                icon: "Cog6ToothIcon",
-                iconType: "outline",
-                href: "#",
-                keywords: ["settings", "user", "account", "preferences"],
-              },
+              // {
+              //   id: "user.profile",
+              //   children: "Profile",
+              //   icon: "UserIcon",
+              //   iconType: "outline",
+              //   href: "#",
+              //   keywords: ["profile", "user", "account"],
+              // },
+              // {
+              //   id: "user.settings",
+              //   children: "Settings",
+              //   icon: "Cog6ToothIcon",
+              //   iconType: "outline",
+              //   href: "#",
+              //   keywords: ["settings", "user", "account", "preferences"],
+              // },
               {
                 id: "user.logout",
                 children: "Logout",
@@ -274,26 +298,28 @@ export default function CmdK({
         )}
       </CommandPalette.Page>
 
-      <CommandPalette.Page
-        id="particles"
-        searchPrefix={["Particle"]}
-        onEscape={() => setPage("root")}
-      >
-        <CommandPalette.List key="particles" heading="Particles">
+      <CommandPalette.Page id="particles" onEscape={() => setPage("root")}>
+        <CommandPalette.List key="action" heading="Action">
           <CommandPalette.ListItem
-            key="particle-1"
+            key="search"
             index={0}
-            icon="CircleStackIcon"
+            icon="MagnifyingGlassIcon"
             closeOnSelect={false}
             onClick={() => {
-              setStatus(statusTypes[StatusType.Ready]);
-              setPage("root");
+              if (search && search.trim().length > 0) {
+                setStatus(statusTypes[StatusType.Success]);
+                setIsOpen(false);
+                setPage("root");
+              } else {
+                setStatus({
+                  ...statusTypes[StatusType.Error],
+                  message: "Please enter a search term",
+                });
+              }
             }}
           >
-            Title
+            Search
           </CommandPalette.ListItem>
-        </CommandPalette.List>
-        <CommandPalette.List key="action" heading="Action">
           <CommandPalette.ListItem
             key="back"
             index={1}

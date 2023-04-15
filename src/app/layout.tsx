@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { Rubik } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.css";
 import SupabaseProvider from "../lib/supabase-provider";
 
 const rubik = Rubik({

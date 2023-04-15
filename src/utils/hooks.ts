@@ -59,7 +59,7 @@ export function useTheme() {
   useEffect(() => {
     document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
-    Cookies.set("theme", theme);
+    Cookies.set("theme", theme, { sameSite: "Strict" });
   }, [theme]);
 
   return { theme, setTheme };

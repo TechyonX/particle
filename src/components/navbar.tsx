@@ -62,6 +62,7 @@ export default function Navbar() {
                           readOnly={true}
                           disabled={true}
                           type="text"
+                          onClick={() => setIsCmdKOpen(true)}
                         />
                         <button
                           type="button"
