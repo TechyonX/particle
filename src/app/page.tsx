@@ -14,7 +14,7 @@ export default function HomePage() {
           <p className="text-xl">Build your own universe!</p>
           <div className="mt-4">
             <Link href="/login">
-              <div className="rounded-md p-1 text-lg bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-emerald-700 via-emerald-600 to-cyan-700 hover:to-emerald-700 hover:via-emerald-600 hover:from-cyan-700 transform hover:scale-105 transition ease-in-out">
+              <div className="rounded-md p-1 text-lg bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-particle-700 via-particle-600 to-teal-700 hover:to-particle-700 hover:via-particle-600 hover:from-teal-700 transform hover:scale-105 transition ease-in-out">
                 <div className="rounded-md h-full w-full px-8 py-4 bg-gray-900/90 text-white">
                   Get started
                 </div>

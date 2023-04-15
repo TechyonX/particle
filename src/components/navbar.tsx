@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import Image from "next/image";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -37,13 +38,14 @@ export default function Navbar() {
               >
                 <div className="flex items-center">
                   <a href="/">
-                    <div className="flex-shrink-0 bg-gray-300/50 hover:bg-gray-300 dark:bg-gray-700/50 dark:hover:bg-gray-700 rounded-md px-3 py-2">
-                      {/* <img
-                        className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Particle"
-                      /> */}
-                      <span className="sr-only">Logo</span>📌
+                    <div className="flex-shrink-0 rounded-md">
+                      <Image
+                        className="h-10 w-10"
+                        src="/particle-dark.svg"
+                        alt="Particle Logo"
+                        width={48}
+                        height={48}
+                      />
                     </div>
                   </a>
                 </div>
@@ -167,7 +169,7 @@ export default function Navbar() {
                       <div className="flex items-center">
                         <Link
                           href="/login"
-                          className="rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                          className="rounded-md border border-transparent bg-particle-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-particle-700 focus:outline-none focus:ring-2 focus:ring-particle-500 focus:ring-offset-2"
                         >
                           Login / Register
                         </Link>

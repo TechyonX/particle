@@ -32,7 +32,7 @@ export default function InputForm() {
 
   return (
     <form action="#" className="relative">
-      <div className="overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm dark:shadow-gray-800 dark:bg-gray-950 focus-within:border-emerald-500 dark:focus-within:border-emerald-300 focus-within:ring-1 focus-within:ring-emerald-500 dark:focus-within:ring-emerald-300">
+      <div className="overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm dark:shadow-gray-800 dark:bg-gray-950 focus-within:border-particle-500 dark:focus-within:border-particle-300 focus-within:ring-1 focus-within:ring-particle-500 dark:focus-within:ring-particle-300">
         <label htmlFor="title" className="sr-only">
           Title
         </label>
@@ -220,7 +220,7 @@ export default function InputForm() {
           <div className="flex-shrink-0">
             <button
               type="submit"
-              className="inline-flex items-center rounded-md border border-transparent bg-emerald-200 dark:bg-emerald-600 px-4 py-2 text-sm font-medium text-black dark:text-white shadow-sm hover:bg-emerald-300 dark:hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-300 dark:focus:ring-emerald-600 focus:ring-offset-2"
+              className="inline-flex items-center rounded-md border border-transparent bg-particle-200 dark:bg-particle-600 px-4 py-2 text-sm font-medium text-black dark:text-white shadow-sm hover:bg-particle-300 dark:hover:bg-particle-700 focus:outline-none focus:ring-2 focus:ring-particle-300 dark:focus:ring-particle-600 focus:ring-offset-2"
             >
               Save
             </button>

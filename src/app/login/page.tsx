@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useSupabase } from "../../lib/supabase-provider";
 import { FormEvent, useState } from "react";
 import { Transition } from "@headlessui/react";
@@ -86,7 +87,7 @@ export default function Page() {
               <div className="absolute rounded-lg inset-0 z-10 flex items-center justify-center transition-all duration-200 ease-in-out bg-gray-50/20 dark:bg-gray-950/10 backdrop-blur-sm">
                 <svg
                   aria-hidden="true"
-                  className="w-8 h-8 text-gray-300 animate-spin dark:text-gray-600 fill-emerald-600 dark:fill-emerald-400"
+                  className="w-8 h-8 text-gray-300 animate-spin dark:text-gray-600 fill-particle-600 dark:fill-particle-400"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,12 +104,14 @@ export default function Page() {
               </div>
             </Transition>
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-              {/* <img
-                  className="mx-auto h-12 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=600"
-                  alt="Particle"
-                /> */}
-              <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+              <Image
+                className="h-16 w-16 mx-auto"
+                src="/particle-dark.svg"
+                alt="Particle Logo"
+                width={64}
+                height={64}
+              />
+              <h2 className="mt-4 text-center text-2xl font-light tracking-tight text-gray-900 dark:text-gray-300">
                 Login to Particle
               </h2>
             </div>
@@ -198,13 +201,13 @@ export default function Page() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 dark:border-gray-600 dark:bg-gray-900 dark:focus:bg-gray-950 dark:text-gray-200 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 dark:border-gray-600 dark:bg-gray-900 dark:focus:bg-gray-950 dark:text-gray-200 shadow-sm focus:border-particle-500 focus:outline-none focus:ring-particle-500 sm:text-sm"
                 />
               </div>
               <div className="w-full text-center">
                 <button
                   type="submit"
-                  className="rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                  className="rounded-md border border-transparent bg-particle-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-particle-700 focus:outline-none focus:ring-2 focus:ring-particle-500 focus:ring-offset-2"
                 >
                   Send Magic Link
                 </button>
@@ -215,7 +218,7 @@ export default function Page() {
             <p>
               <Link
                 href="/"
-                className="text-emerald-600 dark:text-emerald-200 text-sm hover:underline hover:bg-emerald-100/20"
+                className="text-particle-600 dark:text-particle-200 text-sm hover:underline hover:bg-particle-100/20"
               >
                 ← Back to Homepage
               </Link>
