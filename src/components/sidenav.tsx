@@ -1,9 +1,16 @@
 import { classNames, colorVariants } from "@/utils/misc";
 import { ArchiveBoxIcon, HomeIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navigation = [
-  { name: "Home", icon: HomeIcon, href: "#", current: true },
-  { name: "Archive", icon: ArchiveBoxIcon, href: "#", current: false },
+  { name: "Home", icon: HomeIcon, href: "/universe", current: true },
+  {
+    name: "Archive",
+    icon: ArchiveBoxIcon,
+    href: "/universe/archive",
+    current: false,
+  },
 ];
 
 const tags = [
@@ -17,17 +24,19 @@ const tags = [
 ];
 
 export default function SideNav() {
+  const pathName = usePathname();
+
   return (
     <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 dark:border-gray-700 pt-5 pb-4 mr-4">
       <div className="flex flex-grow flex-col">
         <nav className="flex-1 space-y-8 px-2" aria-label="Sidebar">
           <div className="space-y-1">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className={classNames(
-                  item.current
+                  pathName === item.href
                     ? " text-gray-900 bg-gray-200 dark:text-gray-100 dark:bg-gray-800"
                     : "text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100",
                   "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
@@ -35,7 +44,7 @@ export default function SideNav() {
               >
                 <item.icon
                   className={classNames(
-                    item.current
+                    pathName === item.href
                       ? "text-gray-500 dark:text-gray-400"
                       : "text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400",
                     "mr-3 flex-shrink-0 h-6 w-6"
@@ -43,7 +52,7 @@ export default function SideNav() {
                   aria-hidden="true"
                 />
                 {item.name}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="space-y-1">

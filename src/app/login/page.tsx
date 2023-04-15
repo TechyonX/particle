@@ -106,7 +106,7 @@ export default function Page() {
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
               <Image
                 className="h-16 w-16 mx-auto"
-                src="/particle-dark.svg"
+                src="/particle-standalone.svg"
                 alt="Particle Logo"
                 width={64}
                 height={64}

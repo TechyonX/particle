@@ -16,6 +16,9 @@ export default function CmdK({
 }) {
   const [page, setPage] = useState<"root" | "particles">("root");
   const [search, setSearch] = useState("");
+  const [placeholder, setPlaceholder] = useState(
+    "Search for a particle or action..."
+  );
   // const [isOpen, setIsOpen] = useState(false);
   const { auth, session } = useAuth();
   const { setTheme } = useTheme();
@@ -30,6 +33,15 @@ export default function CmdK({
             id: "universe",
             items: [
               {
+                id: "universe.new",
+                children: "Spawn new particle",
+                icon: "PlusCircleIcon",
+                iconType: "outline",
+                closeOnSelect: false,
+                href: "#",
+                keywords: ["new", "spawn", "particle", "create"],
+              },
+              {
                 id: "universe.search",
                 children: "Search particles",
                 icon: "MagnifyingGlassIcon",
@@ -39,14 +51,6 @@ export default function CmdK({
                   setPage("particles");
                 },
                 keywords: ["list", "particles", "spawned", "search", "find"],
-              },
-              {
-                id: "universe.new",
-                children: "Spawn new particle",
-                icon: "PlusCircleIcon",
-                iconType: "outline",
-                href: "#",
-                keywords: ["new", "spawn", "particle", "create"],
               },
               {
                 id: "universe.home",
@@ -179,7 +183,7 @@ export default function CmdK({
       search={search}
       isOpen={isOpen}
       page={page}
-      placeholder="Search for a particle or action..."
+      placeholder={placeholder}
     >
       <CommandPalette.Page id="root">
         {filteredItems.length ? (
@@ -199,7 +203,7 @@ export default function CmdK({
         )}
       </CommandPalette.Page>
 
-      <CommandPalette.Page id="particles" searchPrefix={["Particle"]}>
+      <CommandPalette.Page id="particles" searchPrefix={["Particle"]} onEscape={() => setPage("root")}>
         <CommandPalette.List key="particles" heading="Particles">
           <CommandPalette.ListItem
             key="particle-1"
