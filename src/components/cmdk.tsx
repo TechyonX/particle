@@ -17,111 +17,160 @@ export default function CmdK({
   const [page, setPage] = useState<"root" | "particles">("root");
   const [search, setSearch] = useState("");
   // const [isOpen, setIsOpen] = useState(false);
-  const { auth } = useAuth();
+  const { auth, session } = useAuth();
   const { setTheme } = useTheme();
 
   useHandleOpenCommandPalette(setIsOpen);
 
-  const filteredItems = filterItems(
-    [
-      {
-        heading: "Universe",
-        id: "universe",
-        items: [
+  const filteredItems = session
+    ? filterItems(
+        [
           {
-            id: "universe.search",
-            children: "Search particles",
-            icon: "MagnifyingGlassIcon",
-            iconType: "outline",
-            closeOnSelect: false,
-            onClick: () => {
-              setPage("particles");
-            },
-            keywords: ["list", "particles", "spawned", "search", "find"],
+            heading: "Universe",
+            id: "universe",
+            items: [
+              {
+                id: "universe.search",
+                children: "Search particles",
+                icon: "MagnifyingGlassIcon",
+                iconType: "outline",
+                closeOnSelect: false,
+                onClick: () => {
+                  setPage("particles");
+                },
+                keywords: ["list", "particles", "spawned", "search", "find"],
+              },
+              {
+                id: "universe.new",
+                children: "Spawn new particle",
+                icon: "PlusCircleIcon",
+                iconType: "outline",
+                href: "#",
+                keywords: ["new", "spawn", "particle", "create"],
+              },
+              {
+                id: "universe.home",
+                children: "Go to Home",
+                icon: "HomeIcon",
+                iconType: "outline",
+                href: "/universe",
+                keywords: ["home", "observe", "list"],
+              },
+              {
+                id: "universe.archive",
+                children: "Go to Archive",
+                icon: "ArchiveBoxIcon",
+                iconType: "outline",
+                href: "/universe",
+                keywords: ["archive", "observe", "list"],
+              },
+            ],
           },
           {
-            id: "universe.new",
-            children: "Spawn new particle",
-            icon: "PlusCircleIcon",
-            iconType: "outline",
-            href: "#",
-            keywords: ["new", "spawn", "particle", "create"],
+            heading: "Theme",
+            id: "theme",
+            items: [
+              {
+                id: "theme.dark-mode",
+                children: "Dark mode",
+                icon: "MoonIcon",
+                iconType: "outline",
+                onClick: () => setTheme("dark"),
+                keywords: ["theme", "dark", "mode"],
+              },
+              {
+                id: "theme.light-mode",
+                children: "Light mode",
+                icon: "SunIcon",
+                iconType: "outline",
+                onClick: () => setTheme("light"),
+                keywords: ["theme", "light", "mode"],
+              },
+            ],
           },
           {
-            id: "universe.home",
-            children: "Go to Home",
-            icon: "HomeIcon",
-            iconType: "outline",
-            href: "/universe",
-            keywords: ["home", "observe", "list"],
-          },
-          {
-            id: "universe.archive",
-            children: "Go to Archive",
-            icon: "ArchiveBoxIcon",
-            iconType: "outline",
-            href: "/universe",
-            keywords: ["archive", "observe", "list"],
+            heading: "User",
+            id: "user",
+            items: [
+              {
+                id: "user.profile",
+                children: "Profile",
+                icon: "UserIcon",
+                iconType: "outline",
+                href: "#",
+                keywords: ["profile", "user", "account"],
+              },
+              {
+                id: "user.settings",
+                children: "Settings",
+                icon: "Cog6ToothIcon",
+                iconType: "outline",
+                href: "#",
+                keywords: ["settings", "user", "account", "preferences"],
+              },
+              {
+                id: "user.logout",
+                children: "Logout",
+                icon: "ArrowLeftOnRectangleIcon",
+                iconType: "outline",
+                onClick: () => {
+                  auth.signOut();
+                },
+                keywords: ["log out", "sign out", "logout", "signout"],
+              },
+            ],
           },
         ],
-      },
-      {
-        heading: "Theme",
-        id: "theme",
-        items: [
+        search
+      )
+    : filterItems(
+        [
           {
-            id: "theme.dark-mode",
-            children: "Dark mode",
-            icon: "MoonIcon",
-            iconType: "outline",
-            onClick: () => setTheme("dark"),
-            keywords: ["theme", "dark", "mode"],
+            heading: "User",
+            id: "user",
+            items: [
+              {
+                id: "user.login",
+                children: "Login / Register",
+                icon: "ArrowRightOnRectangleIcon",
+                iconType: "outline",
+                href: "/login",
+                keywords: [
+                  "login",
+                  "signin",
+                  "signup",
+                  "sign up",
+                  "sign in",
+                  "register",
+                ],
+              },
+            ],
           },
           {
-            id: "theme.light-mode",
-            children: "Light mode",
-            icon: "SunIcon",
-            iconType: "outline",
-            onClick: () => setTheme("light"),
-            keywords: ["theme", "light", "mode"],
-          },
-        ],
-      },
-      {
-        heading: "User",
-        id: "user",
-        items: [
-          {
-            id: "user.profile",
-            children: "Profile",
-            icon: "UserIcon",
-            iconType: "outline",
-            href: "#",
-            keywords: ["profile", "user", "account"],
-          },
-          {
-            id: "user.settings",
-            children: "Settings",
-            icon: "Cog6ToothIcon",
-            iconType: "outline",
-            href: "#",
-            keywords: ["settings", "user", "account", "preferences"],
-          },
-          {
-            id: "user.logout",
-            children: "Logout",
-            icon: "ArrowLeftOnRectangleIcon",
-            iconType: "outline",
-            onClick: () => {
-              auth.signOut();
-            },
-            keywords: ["log out", "sign out", "logout", "signout"],
+            heading: "Theme",
+            id: "theme",
+            items: [
+              {
+                id: "theme.dark-mode",
+                children: "Dark mode",
+                icon: "MoonIcon",
+                iconType: "outline",
+                onClick: () => setTheme("dark"),
+                keywords: ["theme", "dark", "mode"],
+              },
+              {
+                id: "theme.light-mode",
+                children: "Light mode",
+                icon: "SunIcon",
+                iconType: "outline",
+                onClick: () => setTheme("light"),
+                keywords: ["theme", "light", "mode"],
+              },
+            ],
           },
         ],
-      },
-    ],
-    search
-  );
+        search
+      );
 
   return (
     <CommandPalette
