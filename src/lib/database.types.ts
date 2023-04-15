@@ -14,6 +14,7 @@ export interface Database {
           content: string;
           created_at: string;
           description: string | null;
+          fts: unknown | null;
           id: string;
           image: string | null;
           is_archived: boolean;
@@ -27,6 +28,7 @@ export interface Database {
           content: string;
           created_at?: string;
           description?: string | null;
+          fts?: unknown | null;
           id?: string;
           image?: string | null;
           is_archived?: boolean;
@@ -40,6 +42,7 @@ export interface Database {
           content?: string;
           created_at?: string;
           description?: string | null;
+          fts?: unknown | null;
           id?: string;
           image?: string | null;
           is_archived?: boolean;
