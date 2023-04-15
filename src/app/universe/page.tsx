@@ -107,8 +107,7 @@ export default function Universe() {
             <SideNav />
           </div>
           <div className="mx-auto w-full md:w-3/4 sm:mx-4 md:mx-0">
-            <InputForm />
-            <div className="columns-1 gap-3 py-8">
+            <div className="columns-1 gap-3 pb-8">
               {particles.map((particle) => (
                 <ParticleCard key={particle.id} particle={particle} />
               ))}

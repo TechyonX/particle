@@ -3,6 +3,7 @@ import { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { Database } from "@/lib/database.types";
 import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
+import Cookies from "js-cookie";
 
 export function useAuth() {
   const { supabase } = useSupabase();
@@ -49,7 +50,8 @@ export function useTheme() {
   const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
 
   useEffect(() => {
-    const theme = localStorage.getItem("theme") || initialTheme;
+    const theme = Cookies.get("theme") || initialTheme;
+    document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
     setTheme(theme as "light" | "dark");
   }, [initialTheme]);
@@ -57,7 +59,7 @@ export function useTheme() {
   useEffect(() => {
     document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
-    localStorage.setItem("theme", theme);
+    Cookies.set("theme", theme);
   }, [theme]);
 
   return { theme, setTheme };
