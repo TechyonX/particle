@@ -1,4 +1,5 @@
 import Link from "next/link";
+import clsx from "clsx";
 
 function GitHubIcon(props: { className: string }) {
   return (
@@ -34,7 +35,9 @@ export function IconLink({
       }`}
     >
       <span className="absolute inset-0 -z-10 scale-75 rounded-lg bg-white/5 opacity-0 transition group-hover:scale-100 group-hover:opacity-100" />
-      <GitHubIcon className={`flex-none ${large ? "h-6 w-6" : "h-4 w-4"}`} />
+      <GitHubIcon
+        className={clsx("flex-none", large ? "h-6 w-6" : "h-4 w-4")}
+      />
       <span className="self-baseline text-white">{children}</span>
     </Link>
   );

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IconLink } from "@/components/IconLink";
 import { Button } from "@/components/Button";
 
-export function Logo() {
+export function Logo({ className }: { className: string }) {
   return (
     <svg
       width="50"
@@ -11,6 +11,7 @@ export function Logo() {
       viewBox="0 0 50 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <rect width="50" height="50" rx="25" fill="#191C1D" />
       <ellipse

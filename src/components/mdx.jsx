@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 
 import { useFeed } from "@/components/FeedProvider";
 
@@ -39,9 +40,10 @@ function ContentWrapper({ className, children }) {
     <div className="mx-auto max-w-7xl px-6 lg:flex lg:px-8">
       <div className="lg:ml-96 lg:flex lg:w-full lg:justify-end lg:pl-32">
         <div
-          className={`mx-auto max-w-lg lg:mx-0 lg:w-0 lg:max-w-xl lg:flex-auto ${
-            className ? className : ""
-          }`}
+          className={clsx(
+            "mx-auto max-w-lg lg:mx-0 lg:w-0 lg:max-w-xl lg:flex-auto",
+            className
+          )}
         >
           {children}
         </div>

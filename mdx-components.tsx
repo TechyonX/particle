@@ -8,15 +8,6 @@ import { a, img, h2, article, wrapper, code } from "@/components/mdx";
 
 // This file is required to use MDX in `app` directory.
 export function useMDXComponents(components: MDXComponents): MDXComponents {
-  return {
-    // Allows customizing built-in components, e.g. to add styling.
-    // h1: ({ children }) => <h1 style={{ fontSize: "100px" }}>{children}</h1>,
-    ...components,
-    a,
-    wrapper,
-    code,
-    h2,
-    img,
-    article,
-  };
+  // @ts-ignore
+  return { ...components, a, wrapper, code, h2, img, article };
 }
