@@ -1,5 +1,7 @@
 <div style="text-align: center;">
- <img width="100" src="public/logo@dark.svg">
+  <p align="center">
+    <img width="100" src="public/logo@dark.svg">
+  </p>
 </div>
 
 <br>
@@ -64,5 +66,5 @@ We have relied heavily on Supabase’s features as they have powered all of your
 <br>
 
 <div style="text-align: center;">
-  Crafted with &nbsp; 💚 &nbsp; by <a href="https://github.com/techyonx">Techyon</a>
+  <p align="center">Crafted with &nbsp; 💚 &nbsp; by <a href="https://github.com/techyonx">Techyon</a></p>
 </div>
