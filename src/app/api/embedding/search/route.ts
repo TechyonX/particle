@@ -28,8 +28,6 @@ export async function GET(request: Request) {
     let similarityThreshold = similarity ? parseFloat(similarity) : 0.75;
     matchCount = matchCount > 0 ? matchCount : 10;
     similarityThreshold = similarityThreshold > 0 ? similarityThreshold : 0.75;
-    console.log("matchCount", matchCount);
-    console.log("similarityThreshold", similarityThreshold);
     const embeddings = await generateEmbeddings(text);
     let { data, error } = await supabase.rpc("match_particles", {
       match_count: matchCount,

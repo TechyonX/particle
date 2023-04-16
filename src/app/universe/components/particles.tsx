@@ -60,7 +60,14 @@ export default function Particles({ filter }: { filter?: Filter }) {
           switch (payload.eventType) {
             case "INSERT":
               if (newParticle) {
-                setParticles([newParticle, ...particles]);
+                if (
+                  filter?.search &&
+                  filter.search.trim() !== "" &&
+                  newParticle.is_trashed === filter?.isTrashed &&
+                  newParticle.is_archived === filter?.isArchived
+                ) {
+                  setParticles([newParticle, ...particles]);
+                }
               }
               break;
             case "UPDATE":
@@ -108,6 +115,18 @@ export default function Particles({ filter }: { filter?: Filter }) {
 
   useEffect(() => {
     const getParticles = async () => {
+      let similaritySearch: string[] = [];
+      if (filter?.search && filter.search.trim() !== "") {
+        const res = await fetch(
+          `/api/embedding/search?text=${filter.search}&limit=30`
+        );
+        const json = await res.json();
+        if (json.data && json.data.length > 0) {
+          json.data.map((item: { particle_id: string }) => {
+            similaritySearch.push(item.particle_id);
+          });
+        }
+      }
       let query = supabase
         .from("particle")
         .select(
@@ -119,9 +138,9 @@ export default function Particles({ filter }: { filter?: Filter }) {
       } else {
         query = query.eq("is_trashed", false);
       }
-      if (filter?.search && filter.search.trim() !== "") {
-        query = query.textSearch("fts", filter.search);
-      }
+      // if (filter?.search && filter.search.trim() !== "") {
+      //   query = query.textSearch("fts", filter.search, { type: "plain" });
+      // }
       if (filter?.type && filter.type.trim() !== "") {
         query = query.eq("type", filter.type);
       }
@@ -131,15 +150,33 @@ export default function Particles({ filter }: { filter?: Filter }) {
       if (filter?.isPublic !== undefined) {
         query = query.eq("is_public", filter.isPublic);
       }
-      query = query.order("created_at", { ascending: false });
+      if (similaritySearch.length > 0) {
+        query = query.in("id", similaritySearch);
+      } else {
+        query = query.order("created_at", { ascending: false });
+      }
 
       const { data, error } = await query;
       if (error) {
         console.log(error);
       } else {
-        setParticles(data.map<Database["public"]["Tables"]["particle"]["Row"]>(
+        data.map<Database["public"]["Tables"]["particle"]["Row"]>(
           (particle) => ({ embedding: null, fts: null, ...particle })
-        ));
+        );
+        const result = similaritySearch.map<
+          Database["public"]["Tables"]["particle"]["Row"] | null
+        >((id) => {
+          const particle = data.find((particle) => particle.id === id);
+          if (particle) {
+            return { embedding: null, fts: null, ...particle };
+          }
+          return null;
+        });
+        setParticles(
+          result.filter(
+            (particle) => particle !== null
+          ) as Database["public"]["Tables"]["particle"]["Row"][]
+        );
       }
       setLoading(false);
     };
