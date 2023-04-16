@@ -5,13 +5,13 @@ import clsx from "clsx";
 
 import { useFeed } from "@/components/FeedProvider";
 
-export const a = Link;
+export const A = Link;
 
-export const wrapper = function Wrapper({ children }) {
+export function Wrapper({ children }) {
   return children;
-};
+}
 
-export const h2 = function H2(props) {
+export function H2(props) {
   let { isFeed } = useFeed();
 
   if (isFeed) {
@@ -19,9 +19,9 @@ export const h2 = function H2(props) {
   }
 
   return <h2 {...props} />;
-};
+}
 
-export const img = function Img(props) {
+export function Img(props) {
   return (
     <div className="relative mt-8 overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-900 [&+*]:mt-8">
       <Image
@@ -32,7 +32,7 @@ export const img = function Img(props) {
       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
     </div>
   );
-};
+}
 
 function ContentWrapper({ className, children }) {
   return (
@@ -75,7 +75,7 @@ function ArticleHeader({ id, date }) {
   );
 }
 
-export const article = function Article({ id, title, date, children }) {
+export function Article({ id, title, date, children }) {
   let { isFeed } = useFeed();
   let heightRef = useRef();
   let [heightAdjustment, setHeightAdjustment] = useState(0);
@@ -120,9 +120,9 @@ export const article = function Article({ id, title, date, children }) {
       </div>
     </article>
   );
-};
+}
 
-export const code = function Code({ highlightedCode, ...props }) {
+export function Code({ highlightedCode, ...props }) {
   if (highlightedCode) {
     return (
       <code {...props} dangerouslySetInnerHTML={{ __html: highlightedCode }} />
@@ -130,4 +130,4 @@ export const code = function Code({ highlightedCode, ...props }) {
   }
 
   return <code {...props} />;
-};
+}

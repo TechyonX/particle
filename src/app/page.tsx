@@ -5,6 +5,8 @@ import { StarField } from "@/components/StarField";
 import { useTheme } from "@/utils/hooks";
 import { useEffect, useId, useState } from "react";
 import Articles from "./article.mdx";
+import { useMDXComponents } from "../../mdx-components";
+import "../styles/typography.css";
 
 function ThemeIcon({ className }: { className: string }) {
   return (
@@ -108,7 +110,7 @@ function FixedSidebar({
 
 export default function HomePage() {
   const [isCmdKOpen, setIsCmdKOpen] = useState(false);
-
+  const components = useMDXComponents({});
   return (
     <>
       <CmdK isOpen={isCmdKOpen} setIsOpen={setIsCmdKOpen} />
@@ -116,7 +118,7 @@ export default function HomePage() {
       <ThemeToggle />
       <div className="relative flex-auto">
         <main className="space-y-20 py-20 sm:space-y-32 sm:py-32">
-          <Articles />
+          <Articles components={components} />
         </main>
       </div>
     </>
