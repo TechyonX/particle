@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Particle
 
-## Getting Started
+Introducing Particle - the ultimate digital content manager. With
+Particle, you can easily organize and access all your digital content in
+one place. Our AI-powered search features allow you to quickly find what
+you need, while our custom model helps you better manage and categorize your content.
 
-First, run the development server:
+<br>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+![cmd+k](src/images/cmdk.jpg)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 💡 Concepts - Spawning particles is our way of creating something new. With just a few keystrokes, you can create a link, an image, or a long text that you want to refer back to or keep track of.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Spawn** new links, images, and text particles.
+- **Tag** them for easy retrieval later.
+- Need to organize your **particles**? Use **entanglement**
+- Make it **observable** publicly, or keep them private – your choice.
+- Do not need to keep track of certain particles? **Archive** them.
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+<br>
+<br>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Raycast Extension](src/images/raycast.png)
 
-## Learn More
+### ✨ Bespoke Raycast Extension
 
-To learn more about Next.js, take a look at the following resources:
+Raycast is an excellent productivity tool, so we created a Particle extension specifically for it.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Spawn new particles from your selections
+- Observe and manage your particle universe
+- Make them public or archive instantly from the extension
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<br>
+<br>
 
-## Deploy on Vercel
+![AI](src/images/wand.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🪄 Magic of AI
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Particle will act as your memory bank, just like the one Dumbledore had. But do not worry, no witchcraft or wizardry is involved - just the power of advanced AI.
+
+- Title, description or any other particle metadata fields are generated with the help of AI
+- Our AI understands the content, making it easier to find when needed.
+
+<br>
+<br>
+
+![Supabase](src/images/supabase.jpeg)
+
+### ⚡ Powered by Supabase
+
+We have relied heavily on Supabase’s features as they have powered all of your essential services.
+
+- **Database** - One of the most important ways that we have utilized Supabase is by using their platform to create our database schema. This has enabled us to design and implement a database structure that is both robust and scalable, allowing us to store and manage our data more effectively.
+- **API** - Generating APIs directly from the database schema gave us access to a reliable and highly functional API.
+- **Storage** - Storage API allows us to store and access media files quickly and securely. This ensures our users have easy access to their saved content without any delays or disruptions.
+- **Authentication** - One of the hardest thing to implement right is authentication & authorization. Utilizing the authentication features made easy for us to employ various strategies.
