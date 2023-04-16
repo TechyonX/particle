@@ -56,14 +56,23 @@ export default async function Observe({ params }: { params: { id: string } }) {
           )}
         >
           {particle.title && particle.title.trim().length > 0 ? (
-            <h1 className="text-2xl font-bold pb-2">{particle.title}</h1>
+            <h1 className="text-2xl font-bold pb-1">{particle.title}</h1>
           ) : (
-            <h1 className="text-2xl font-bold pb-2 italic text-gray-500">
+            <h1 className="text-2xl font-bold pb-1 italic text-gray-500">
               Untitled
             </h1>
           )}
-          <p className="text-sm pb-2">{particle.description}</p>
+          <p className="text-sm pb-1 italic">{particle.description}</p>
           <p>{particle.content}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400 pt-4">
+            {
+              new Date(particle.created_at)
+                .toISOString()
+                .split("T")
+                .join(" ")
+                .split(".")[0]
+            }
+          </p>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center">

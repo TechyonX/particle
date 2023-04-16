@@ -46,3 +46,8 @@
   display: flex;
   flex-direction: column;
 }
+
+.action-btn {
+  @apply text-sm rounded-md transition border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-500 px-2 py-1 mx-1;
+  @apply text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200;
+}

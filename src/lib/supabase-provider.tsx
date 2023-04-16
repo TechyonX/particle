@@ -9,6 +9,7 @@ import type { Database } from "./database.types";
 
 type SupabaseContext = {
   supabase: SupabaseClient<Database>;
+  particleTypes: Database["public"]["Tables"]["type"]["Row"][];
 };
 
 const Context = createContext<SupabaseContext | undefined>(undefined);
@@ -18,7 +19,10 @@ export default function SupabaseProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [supabase] = useState(() => createBrowserSupabaseClient());
+  const [supabase] = useState(() => createBrowserSupabaseClient<Database>());
+  const [particleTypes, setParticleTypes] = useState<
+    Database["public"]["Tables"]["type"]["Row"][]
+  >([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,8 +47,21 @@ export default function SupabaseProvider({
     };
   }, [router, supabase]);
 
+  useEffect(() => {
+    supabase
+      .from("type")
+      .select("*")
+      .then(({ data, error }) => {
+        if (error) {
+        }
+        if (data) {
+          setParticleTypes(data);
+        }
+      });
+  }, [supabase]);
+
   return (
-    <Context.Provider value={{ supabase }}>
+    <Context.Provider value={{ supabase, particleTypes }}>
       <>{children}</>
     </Context.Provider>
   );

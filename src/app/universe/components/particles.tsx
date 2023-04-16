@@ -64,6 +64,18 @@ export default function Particles({ filter }: { filter?: Filter }) {
               break;
             case "UPDATE":
               if (newParticle) {
+                if(newParticle.is_trashed && !filter?.isTrashed) {
+                  setParticles(
+                    particles.filter((particle) => particle.id !== newParticle?.id)
+                  );
+                  return;
+                }
+                if(newParticle.is_archived && !filter?.isArchived) {
+                  setParticles(
+                    particles.filter((particle) => particle.id !== newParticle?.id)
+                  );
+                  return;
+                }
                 setParticles(
                   particles.map((particle) =>
                     newParticle && particle.id === newParticle.id
