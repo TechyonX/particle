@@ -8,7 +8,6 @@ export const revalidate = 0;
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const text = searchParams.get("text");
-  return null;
 
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
@@ -23,8 +22,9 @@ export async function GET(request: Request) {
   }
 
   if (text && text.trim().length > 0) {
-    const embeddings = await generateEmbeddings(text);
-    return new Response(JSON.stringify({ text, embeddings }));
+    // const embeddings = await generateEmbeddings(text);
+    // return new Response(JSON.stringify({ text, embeddings }));
+    return new Response(JSON.stringify({ text }));
   }
   return new Response(JSON.stringify({ message: "Bad request" }), {
     status: 400,
