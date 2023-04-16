@@ -1,6 +1,10 @@
-# Particle
+<div style="text-align: center;">
+ <img width="100" src="public/logo@dark.svg">
+</div>
 
-Introducing Particle - the ultimate digital content manager. With
+<br>
+
+Introducing **Particle** - the ultimate digital content manager inspired by the **quantum universe**. With
 Particle, you can easily organize and access all your digital content in
 one place. Our AI-powered search features allow you to quickly find what
 you need, while our custom model helps you better manage and categorize your content.
@@ -55,3 +59,10 @@ We have relied heavily on Supabase’s features as they have powered all of your
 - **API** - Generating APIs directly from the database schema gave us access to a reliable and highly functional API.
 - **Storage** - Storage API allows us to store and access media files quickly and securely. This ensures our users have easy access to their saved content without any delays or disruptions.
 - **Authentication** - One of the hardest thing to implement right is authentication & authorization. Utilizing the authentication features made easy for us to employ various strategies.
+
+<br>
+<br>
+
+<div style="text-align: center;">
+  Crafted with &nbsp; 💚 &nbsp; by <a href="https://github.com/techyonx">Techyon</a>
+</div>

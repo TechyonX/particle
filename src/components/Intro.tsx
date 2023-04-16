@@ -65,11 +65,11 @@ export function Intro() {
         <span className="text-cyan-400">digital universe</span>
       </h1>
       <p className="mt-4 text-sm/6 text-gray-300">
-        Introducing Particle - the ultimate digital content manager. With
-        Particle, you can easily organize and access all your digital content in
-        one place. Our AI-powered search features allow you to quickly find what
-        you need, while our natural language processing technology helps you
-        better manage and categorize your content.
+        Introducing Particle - the ultimate digital content manager inspired by
+        the quantum universe. With Particle, you can easily organize and access
+        all your digital content in one place. Our AI-powered search features
+        allow you to quickly find what you need, while our custom model helps
+        you better manage and categorize your content.
       </p>
       <div className="mt-8">
         <Button
@@ -87,7 +87,7 @@ export function Intro() {
 export function IntroFooter() {
   return (
     <p className="flex items-baseline gap-x-2 text-[0.8125rem]/6 text-gray-500">
-      Brought to you by{" "}
+      Crafted with &nbsp; 💚 &nbsp; by{" "}
       <IconLink href="https://github.com/techyonx" compact>
         TechyonX
       </IconLink>
