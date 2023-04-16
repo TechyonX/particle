@@ -22,7 +22,6 @@ export const h2 = function H2(props) {
 };
 
 export const img = function Img(props) {
-  console.log(props);
   return (
     <div className="relative mt-8 overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-900 [&+*]:mt-8">
       <Image

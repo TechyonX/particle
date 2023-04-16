@@ -116,7 +116,7 @@ export default function HomePage() {
       <ThemeToggle />
       <div className="relative flex-auto">
         <main className="space-y-20 py-20 sm:space-y-32 sm:py-32">
-          {/* <Articles /> */}
+          <Articles />
         </main>
       </div>
     </>
