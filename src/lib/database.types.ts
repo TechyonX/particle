@@ -150,39 +150,22 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      match_particles:
-        | {
-            Args: {
-              query_embedding: string;
-              similarity_threshold: number;
-              match_count: number;
-              uid: number;
-            };
-            Returns: {
-              id: number;
-              title: string;
-              description: string;
-              content: string;
-              user_id: string;
-              similarity: number;
-            }[];
-          }
-        | {
-            Args: {
-              query_embedding: string;
-              similarity_threshold: number;
-              match_count: number;
-              uid: string;
-            };
-            Returns: {
-              id: number;
-              title: string;
-              description: string;
-              content: string;
-              user_id: string;
-              similarity: number;
-            }[];
-          };
+      match_particles: {
+        Args: {
+          query_embedding: string;
+          similarity_threshold: number;
+          match_count: number;
+          uid: string;
+        };
+        Returns: {
+          particle_id: string;
+          particle_title: string;
+          particle_description: string;
+          particle_content: string;
+          particle_uid: string;
+          similarity: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

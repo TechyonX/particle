@@ -23,7 +23,13 @@ export async function GET(request: Request) {
 
   if (text && text.trim().length > 0) {
     const embeddings = await generateEmbeddings(text);
-    return new Response(JSON.stringify({ text, embeddings }));
+    let { data, error } = await supabase.rpc("match_particles", {
+      match_count: 10,
+      query_embedding: JSON.stringify(embeddings),
+      similarity_threshold: 0.75,
+      uid: session.data.session?.user.id,
+    });
+    return new Response(JSON.stringify({ data, error, text }));
   }
   return new Response(JSON.stringify({ message: "Bad request" }), {
     status: 400,

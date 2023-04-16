@@ -5,6 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 export async function POST(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
+  console.log("Webhook body", request.body);
 
   const token = request.headers.get("TOKEN");
 
