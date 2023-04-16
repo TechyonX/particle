@@ -9,6 +9,7 @@ import { useAuth } from "@/utils/hooks";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert, { AlertType } from "@/components/alert";
 import { StatusType, StatusTypeItem, statusTypes } from "@/components/cmdk";
+import { hashTagExtractor, urlExtractor } from "@/utils/misc";
 
 enum ParticleType {
   Text = "text",
@@ -207,14 +208,4 @@ function ParticleProperties({
       </div>
     </div>
   );
-}
-
-function urlExtractor(text: string) {
-  const urls = text.match(/((http|https)?:\/\/[^\s]+)/gi);
-  return urls;
-}
-
-function hashTagExtractor(text: string) {
-  const hashTags = text.match(/#[a-z0-9]+/gi);
-  return hashTags;
 }

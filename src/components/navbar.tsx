@@ -25,7 +25,7 @@ export default function Navbar() {
       <CmdK isOpen={isCmdKOpen} setIsOpen={setIsCmdKOpen} />
       <Disclosure
         as="nav"
-        className="sticky top-0 backdrop-blur-md from-gray-300/50 to-gray-100/50 bg-gradient-to-r border-gray-400/10 border-b z-50 dark:from-gray-700/50 dark:to-gray-800/50"
+        className="sticky top-0 backdrop-blur-md from-particle-100/50 to-gray-100/50 bg-gradient-to-r border-gray-400/10 border-b z-50 dark:from-particle-900/50 dark:to-gray-800/50"
       >
         {({ open }) => (
           <>

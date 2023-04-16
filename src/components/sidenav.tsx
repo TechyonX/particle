@@ -1,5 +1,5 @@
 import { classNames, colorVariants } from "@/utils/misc";
-import { ArchiveBoxIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { ArchiveBoxIcon, HomeIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,6 +9,12 @@ const navigation = [
     name: "Archive",
     icon: ArchiveBoxIcon,
     href: "/universe/archive",
+    current: false,
+  },
+  {
+    name: "Trash",
+    icon: TrashIcon,
+    href: "/universe/trash",
     current: false,
   },
 ];

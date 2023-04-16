@@ -2,6 +2,16 @@ export function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+export function urlExtractor(text: string) {
+  const urls = text.match(/((http|https)?:\/\/[^\s]+)/gi);
+  return urls;
+}
+
+export function hashTagExtractor(text: string) {
+  const hashTags = text.match(/#[a-z0-9]+/gi);
+  return hashTags;
+}
+
 export const colorVariants: { [key: string]: string } = {
   slate: "bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200",
   gray: "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200",

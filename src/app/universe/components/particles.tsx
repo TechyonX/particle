@@ -1,21 +1,24 @@
-import InputForm from "@/components/input-form";
 import ParticleCard from "@/app/universe/components/particle";
 import { Database } from "@/lib/database.types";
 import { useSupabase } from "@/lib/supabase-provider";
 import { useAuth } from "@/utils/hooks";
 import { useEffect, useState } from "react";
+import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
+import UniverseLoading from "../loading";
 
 interface Filter {
   search?: string;
   type?: string;
   isPublic?: boolean;
   isArchived?: boolean;
+  isTrashed?: boolean;
   tags?: string[];
 }
 
 export default function Particles({ filter }: { filter?: Filter }) {
   const { supabase } = useSupabase();
   const { session } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [particles, setParticles] = useState<
     Database["public"]["Tables"]["particle"]["Row"][]
   >([]);
@@ -50,6 +53,7 @@ export default function Particles({ filter }: { filter?: Filter }) {
               updated_at: payload.new.updated_at,
               user_id: payload.new.user_id,
               fts: payload.new.fts,
+              is_trashed: payload.new.is_trashed,
             };
           }
           switch (payload.eventType) {
@@ -91,6 +95,11 @@ export default function Particles({ filter }: { filter?: Filter }) {
         .from("particle")
         .select("*")
         .filter("user_id", "eq", session?.user.id);
+      if (filter?.isTrashed !== undefined) {
+        query = query.eq("is_trashed", filter.isTrashed);
+      } else {
+        query = query.eq("is_trashed", false);
+      }
       if (filter?.search && filter.search.trim() !== "") {
         query = query.textSearch("fts", filter.search);
       }
@@ -111,17 +120,32 @@ export default function Particles({ filter }: { filter?: Filter }) {
       } else {
         setParticles(data);
       }
+      setLoading(false);
     };
 
     if (session) {
       getParticles();
     }
   }, [filter, session, supabase]);
+
+  if (loading) {
+    return <UniverseLoading />;
+  }
+
   return (
     <>
-      {particles.map((particle) => (
-        <ParticleCard key={particle.id} particle={particle} />
-      ))}
+      {particles.length > 0 ? (
+        particles.map((particle) => (
+          <ParticleCard key={particle.id} particle={particle} />
+        ))
+      ) : (
+        <div className="flex flex-col items-center justify-center">
+          <ArchiveBoxXMarkIcon className="h-16 w-16 text-gray-500 my-8" />
+          <p className="text-3xl font-light text-gray-500">
+            Oops, this universe is empty!
+          </p>
+        </div>
+      )}
     </>
   );
 }
