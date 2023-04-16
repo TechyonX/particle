@@ -83,11 +83,11 @@ export default function CmdK({
     ? filterItems(
         [
           {
-            heading: "Universe",
-            id: "universe",
+            heading: "Particle",
+            id: "particle",
             items: [
               {
-                id: "universe.new",
+                id: "particle.new",
                 children: "Spawn new particle",
                 icon: "PlusCircleIcon",
                 iconType: "outline",
@@ -107,7 +107,7 @@ export default function CmdK({
                 keywords: ["new", "spawn", "particle", "create"],
               },
               {
-                id: "universe.search",
+                id: "particle.search",
                 children: "Search particles",
                 icon: "MagnifyingGlassIcon",
                 iconType: "outline",
@@ -117,8 +117,14 @@ export default function CmdK({
                 },
                 keywords: ["list", "particles", "spawned", "search", "find"],
               },
+            ],
+          },
+          {
+            heading: "Navigation",
+            id: "navigation",
+            items: [
               {
-                id: "universe.home",
+                id: "navigation.home",
                 children: "Go to Home",
                 icon: "HomeIcon",
                 iconType: "outline",
@@ -133,7 +139,7 @@ export default function CmdK({
                 keywords: ["home", "observe", "list"],
               },
               {
-                id: "universe.archive",
+                id: "navigation.archive",
                 children: "Go to Archive",
                 icon: "ArchiveBoxIcon",
                 iconType: "outline",
@@ -146,6 +152,21 @@ export default function CmdK({
                     </Link>
                   ),
                 keywords: ["archive", "observe", "list"],
+              },
+              {
+                id: "navigation.trash",
+                children: "Go to Trash",
+                icon: "TrashIcon",
+                iconType: "outline",
+                href: "/universe/trash",
+                renderLink: (props) =>
+                  props.children &&
+                  props.href && (
+                    <Link {...props} href={props.href} ref={null}>
+                      {props.children}
+                    </Link>
+                  ),
+                keywords: ["trash", "removed", "list"],
               },
             ],
           },
@@ -175,22 +196,6 @@ export default function CmdK({
             heading: "User",
             id: "user",
             items: [
-              // {
-              //   id: "user.profile",
-              //   children: "Profile",
-              //   icon: "UserIcon",
-              //   iconType: "outline",
-              //   href: "#",
-              //   keywords: ["profile", "user", "account"],
-              // },
-              // {
-              //   id: "user.settings",
-              //   children: "Settings",
-              //   icon: "Cog6ToothIcon",
-              //   iconType: "outline",
-              //   href: "#",
-              //   keywords: ["settings", "user", "account", "preferences"],
-              // },
               {
                 id: "user.logout",
                 children: "Logout",

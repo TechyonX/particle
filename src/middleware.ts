@@ -20,6 +20,9 @@ export async function middleware(req: NextRequest) {
     }
   } else {
     if (req.nextUrl.pathname.startsWith("/universe")) {
+      if (req.nextUrl.pathname.startsWith("/universe/observe")) {
+        return;
+      }
       return NextResponse.redirect(new NextURL("/login", req.nextUrl));
     }
   }

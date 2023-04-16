@@ -11,9 +11,9 @@ import { classNames } from "@/utils/misc";
 import { useAuth } from "@/utils/hooks";
 import CmdK from "./cmdk";
 
-const userNavigation = [
-  { name: "Profile", href: "#" },
-  { name: "Settings", href: "#" },
+const userNavigation: { name: string; href: string }[] = [
+  // { name: "Profile", href: "#" },
+  // { name: "Settings", href: "#" },
 ];
 
 export default function Navbar() {
@@ -37,7 +37,7 @@ export default function Navbar() {
                 )}
               >
                 <div className="flex items-center">
-                  <a href="/">
+                  <Link href="/">
                     <div className="flex-shrink-0 rounded-md">
                       <Image
                         className="h-10 w-10"
@@ -47,33 +47,22 @@ export default function Navbar() {
                         height={48}
                       />
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 {session ? (
                   <>
-                    <form
-                      className="mb-0 flex px-4 w-full sm:mx-16 md:mx-auto md:max-w-xl lg:mx-auto"
-                      onClick={() => setIsCmdKOpen(true)}
-                    >
-                      <div className="relative w-full">
-                        <input
-                          className="h-10 cursor-pointer rounded-lg w-full border border-gray-400/30 pr-10 text-sm placeholder-gray-400 focus:z-10 bg-white/40 focus:bg-white dark:border-gray-700/30 dark:bg-black/40 dark:text-white"
-                          placeholder="Search for particles or actions... (Cmd+K)"
-                          readOnly={true}
-                          disabled={true}
-                          type="text"
-                          onClick={() => setIsCmdKOpen(true)}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setIsCmdKOpen(true)}
-                          className="absolute inset-y-0 right-0 rounded-r-lg p-2 text-gray-600 dark:text-gray-400"
-                        >
-                          <span className="sr-only">Submit Search</span>
-                          <MagnifyingGlassIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-                        </button>
-                      </div>
-                    </form>
+                    <div className="mb-0 w-full md:w-auto flex px-4 sm:mx-16 md:mx-auto md:max-w-xl lg:mx-auto justify-center">
+                      <button
+                        type="button"
+                        onClick={() => setIsCmdKOpen(true)}
+                        className="w-full flex flex-row items-center text-center transition rounded-lg p-2 border text-sm border-particle-500/30 hover:border-particle-500/60 bg-white/40 dark:bg-black/40 text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
+                      >
+                        <MagnifyingGlassIcon className="flex h-5 w-5" />
+                        <span className="flex mx-auto text-center md:mx-12">
+                          Search... (cmd+k)
+                        </span>
+                      </button>
+                    </div>
                     <div className="hidden md:block">
                       <div className="flex items-center">
                         <Menu as="div" className="relative ml-3">
