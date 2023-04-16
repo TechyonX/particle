@@ -160,23 +160,27 @@ export default function Particles({ filter }: { filter?: Filter }) {
       if (error) {
         console.log(error);
       } else {
-        data.map<Database["public"]["Tables"]["particle"]["Row"]>(
-          (particle) => ({ embedding: null, fts: null, ...particle })
-        );
-        const result = similaritySearch.map<
-          Database["public"]["Tables"]["particle"]["Row"] | null
-        >((id) => {
-          const particle = data.find((particle) => particle.id === id);
-          if (particle) {
-            return { embedding: null, fts: null, ...particle };
-          }
-          return null;
-        });
-        setParticles(
-          result.filter(
-            (particle) => particle !== null
-          ) as Database["public"]["Tables"]["particle"]["Row"][]
-        );
+        if (similaritySearch.length > 0) {
+          const result = similaritySearch.map<
+            Database["public"]["Tables"]["particle"]["Row"] | null
+          >((id) => {
+            const particle = data.find((particle) => particle.id === id);
+            if (particle) {
+              return { embedding: null, fts: null, ...particle };
+            }
+            return null;
+          });
+          setParticles(
+            result.filter(
+              (particle) => particle !== null
+            ) as Database["public"]["Tables"]["particle"]["Row"][]
+          );
+        } else {
+          const result = data.map<
+            Database["public"]["Tables"]["particle"]["Row"]
+          >((particle) => ({ embedding: null, fts: null, ...particle }));
+          setParticles(result);
+        }
       }
       setLoading(false);
     };

@@ -54,14 +54,14 @@ function ParticleCardContent({
     >
       <h1
         className={classNames(
-          "text-lg font-bold pb-1",
+          "text-lg font-bold pb-1 break-all",
           !hasTitle && "text-gray-500"
         )}
       >
         {hasTitle ? particle.title : "-"}
       </h1>
-      <p className="text-sm pb-1 italic">{particle.description}</p>
-      <p>{particle.content}</p>
+      <p className="text-sm pb-1 italic break-all">{particle.description}</p>
+      <p className="break-all">{particle.content}</p>
       <p className="text-xs text-gray-600 dark:text-gray-400 pt-2">
         {
           new Date(particle.created_at)

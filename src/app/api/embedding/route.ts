@@ -8,6 +8,7 @@ export const revalidate = 0;
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const text = searchParams.get("text");
+  return null;
 
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
