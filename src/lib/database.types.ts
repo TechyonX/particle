@@ -14,6 +14,7 @@ export interface Database {
           content: string
           created_at: string
           description: string | null
+          embedding: string | null
           fts: unknown | null
           id: string
           image: string | null
@@ -29,6 +30,7 @@ export interface Database {
           content: string
           created_at?: string
           description?: string | null
+          embedding?: string | null
           fts?: unknown | null
           id?: string
           image?: string | null
@@ -44,6 +46,7 @@ export interface Database {
           content?: string
           created_at?: string
           description?: string | null
+          embedding?: string | null
           fts?: unknown | null
           id?: string
           image?: string | null
@@ -147,7 +150,22 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      match_particles: {
+        Args: {
+          query_embedding: string
+          similarity_threshold: number
+          match_count: number
+          uid: number
+        }
+        Returns: {
+          id: number
+          title: string
+          description: string
+          content: string
+          user_id: number
+          similarity: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
