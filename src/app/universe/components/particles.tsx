@@ -64,15 +64,19 @@ export default function Particles({ filter }: { filter?: Filter }) {
               break;
             case "UPDATE":
               if (newParticle) {
-                if(newParticle.is_trashed && !filter?.isTrashed) {
+                if (newParticle.is_trashed && !filter?.isTrashed) {
                   setParticles(
-                    particles.filter((particle) => particle.id !== newParticle?.id)
+                    particles.filter(
+                      (particle) => particle.id !== newParticle?.id
+                    )
                   );
                   return;
                 }
-                if(newParticle.is_archived && !filter?.isArchived) {
+                if (newParticle.is_archived && !filter?.isArchived) {
                   setParticles(
-                    particles.filter((particle) => particle.id !== newParticle?.id)
+                    particles.filter(
+                      (particle) => particle.id !== newParticle?.id
+                    )
                   );
                   return;
                 }
@@ -146,6 +150,9 @@ export default function Particles({ filter }: { filter?: Filter }) {
 
   return (
     <>
+      {filter?.search && filter.search.trim() !== "" && (
+        <div className="text-gray-700 dark:text-gray-300 italic text-lg">Results for <span className="font-medium text-gray-800 dark:text-gray-200">&quot;{filter?.search}&quot;</span></div>
+      )}
       {particles.length > 0 ? (
         particles.map((particle) => (
           <ParticleCard key={particle.id} particle={particle} />

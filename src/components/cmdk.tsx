@@ -1,12 +1,6 @@
 import "@/styles/cmdk.css";
 import "@/styles/globals.css";
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import CommandPalette, {
   filterItems,
   getItemIndex,
@@ -16,6 +10,7 @@ import { useAuth, useTheme } from "@/utils/hooks";
 import SpawnParticleCmdKPage from "@/app/universe/components/particle-cmdk";
 import { classNames } from "@/utils/misc";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export enum StatusType {
   Ready = "ready",
@@ -70,6 +65,7 @@ export default function CmdK({
   );
   const { auth, session } = useAuth();
   const { setTheme } = useTheme();
+  const router = useRouter();
 
   useHandleOpenCommandPalette(setIsOpen);
 
@@ -299,7 +295,21 @@ export default function CmdK({
             </CommandPalette.List>
           ))
         ) : (
-          <CommandPalette.FreeSearchAction />
+          <CommandPalette.FreeSearchAction
+            onClick={() => {
+              if (search && search.trim().length > 0) {
+                setStatus(statusTypes[StatusType.Success]);
+                setIsOpen(false);
+                setPage("root");
+                router.push(`/universe?query=${search}`);
+              } else {
+                setStatus({
+                  ...statusTypes[StatusType.Error],
+                  message: "Please enter a search term",
+                });
+              }
+            }}
+          />
         )}
       </CommandPalette.Page>
 
@@ -315,6 +325,7 @@ export default function CmdK({
                 setStatus(statusTypes[StatusType.Success]);
                 setIsOpen(false);
                 setPage("root");
+                router.push(`/universe?query=${search}`);
               } else {
                 setStatus({
                   ...statusTypes[StatusType.Error],
