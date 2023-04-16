@@ -19,9 +19,12 @@ export default function ParticleCard({
   const url = urlExtractor(particle.content);
   const isLink = particle.type === 1 && url && url.length > 0;
   return isLink ? (
-    <a href={isLink ? url[0] : "#"} target={isLink ? "_blank" : undefined}>
-      <ParticleCardContent particle={particle} />
-    </a>
+    <>
+      <a href={isLink ? url[0] : "#"} target={isLink ? "_blank" : undefined}>
+        <ParticleCardContent particle={particle} />
+      </a>
+      <ParticleCardActions particle={particle} />
+    </>
   ) : (
     <>
       <Link href={"/universe/observe/" + particle.id}>
@@ -51,14 +54,14 @@ function ParticleCardContent({
     >
       <h1
         className={classNames(
-          "text-lg font-bold pb-1",
+          "text-lg font-bold pb-1 break-all",
           !hasTitle && "text-gray-500"
         )}
       >
         {hasTitle ? particle.title : "-"}
       </h1>
-      <p className="text-sm pb-1 italic">{particle.description}</p>
-      <p>{particle.content}</p>
+      <p className="text-sm pb-1 italic break-all">{particle.description}</p>
+      <p className="break-all">{particle.content}</p>
       <p className="text-xs text-gray-600 dark:text-gray-400 pt-2">
         {
           new Date(particle.created_at)

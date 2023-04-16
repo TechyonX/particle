@@ -94,12 +94,24 @@ export default function SpawnParticleCmdKPage({
           ...statusTypes[StatusType.Loading],
           message: "Spawning particle...",
         });
-        const res = await supabase.from("particle").insert({
-          content: text,
-          type: type.id,
-          user_id: session.user.id,
-        });
+        const res = await supabase
+          .from("particle")
+          .insert({
+            content: text,
+            type: type.id,
+            user_id: session.user.id,
+          })
+          .select("id");
         if (res.status === 201) {
+          if (res.data) {
+            const embeddingRes = await fetch(
+              `/api/embedding/update?id=${res.data[0].id}`,
+              { method: "POST" }
+            );
+            if (embeddingRes.status !== 200) {
+              console.log("Error occured while updating embedding");
+            }
+          }
           console.log("Particle spawned");
           setStatus({
             ...statusTypes[StatusType.Success],

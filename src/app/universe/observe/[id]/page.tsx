@@ -12,7 +12,9 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
   const { data: particle, error } = await supabase
     .from("particle")
-    .select("*")
+    .select(
+      "content,created_at,description,id,image,is_archived,is_public,is_trashed,title,type,updated_at,user_id"
+    )
     .eq("id", params.id)
     .single();
   if (particle) {
@@ -39,7 +41,9 @@ export default async function Observe({ params }: { params: { id: string } }) {
 
   const { data: particle, error } = await supabase
     .from("particle")
-    .select("*")
+    .select(
+      "content,created_at,description,id,image,is_archived,is_public,is_trashed,title,type,updated_at,user_id"
+    )
     .eq("id", params.id)
     .single();
 
