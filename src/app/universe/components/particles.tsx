@@ -54,6 +54,7 @@ export default function Particles({ filter }: { filter?: Filter }) {
               user_id: payload.new.user_id,
               fts: payload.new.fts,
               is_trashed: payload.new.is_trashed,
+              embedding: payload.new.embedding,
             };
           }
           switch (payload.eventType) {
@@ -109,7 +110,9 @@ export default function Particles({ filter }: { filter?: Filter }) {
     const getParticles = async () => {
       let query = supabase
         .from("particle")
-        .select("*")
+        .select(
+          "content,created_at,description,id,image,is_archived,is_public,is_trashed,title,type,updated_at,user_id"
+        )
         .filter("user_id", "eq", session?.user.id);
       if (filter?.isTrashed !== undefined) {
         query = query.eq("is_trashed", filter.isTrashed);
@@ -134,7 +137,9 @@ export default function Particles({ filter }: { filter?: Filter }) {
       if (error) {
         console.log(error);
       } else {
-        setParticles(data);
+        setParticles(data.map<Database["public"]["Tables"]["particle"]["Row"]>(
+          (particle) => ({ embedding: null, fts: null, ...particle })
+        ));
       }
       setLoading(false);
     };
@@ -151,7 +156,12 @@ export default function Particles({ filter }: { filter?: Filter }) {
   return (
     <>
       {filter?.search && filter.search.trim() !== "" && (
-        <div className="text-gray-700 dark:text-gray-300 italic text-lg">Results for <span className="font-medium text-gray-800 dark:text-gray-200">&quot;{filter?.search}&quot;</span></div>
+        <div className="text-gray-700 dark:text-gray-300 italic text-lg">
+          Results for{" "}
+          <span className="font-medium text-gray-800 dark:text-gray-200">
+            &quot;{filter?.search}&quot;
+          </span>
+        </div>
       )}
       {particles.length > 0 ? (
         particles.map((particle) => (
