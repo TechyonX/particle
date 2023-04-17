@@ -100,7 +100,7 @@ export interface Database {
         Row: {
           color: string | null;
           created_at: string;
-          emoji: string;
+          emoji: string | null;
           id: string;
           name: string;
           updated_at: string;
@@ -109,7 +109,7 @@ export interface Database {
         Insert: {
           color?: string | null;
           created_at?: string;
-          emoji: string;
+          emoji?: string | null;
           id?: string;
           name: string;
           updated_at?: string;
@@ -118,7 +118,7 @@ export interface Database {
         Update: {
           color?: string | null;
           created_at?: string;
-          emoji?: string;
+          emoji?: string | null;
           id?: string;
           name?: string;
           updated_at?: string;

@@ -7,8 +7,13 @@ export function urlExtractor(text: string) {
   return urls;
 }
 
-export function hashTagExtractor(text: string) {
+export function hashTagExtractor(text: string, includePrefix: boolean = false) {
   const hashTags = text.match(/#[a-z0-9]+/gi);
+  if (hashTags && !includePrefix) {
+    return hashTags.map((hashTag) => {
+      return hashTag.replace("#", "");
+    });
+  }
   return hashTags;
 }
 
