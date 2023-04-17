@@ -287,7 +287,7 @@ async function findOrCreateTags(
       .insert(
         tagsToCreate.map((tag) => {
           return {
-            name: tag.replace("#", ""),
+            name: tag,
             user_id: session.user.id,
           };
         })

@@ -150,6 +150,28 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      check_particle_tag: {
+        Args: {
+          uid: string;
+          ptid: number;
+        };
+        Returns: boolean;
+      };
+      get_tags_with_particle_count: {
+        Args: {
+          uid: string;
+        };
+        Returns: {
+          id: string;
+          name: string;
+          emoji: string;
+          color: string;
+          user_id: string;
+          created_at: string;
+          updated_at: string;
+          particle_count: number;
+        }[];
+      };
       match_particles: {
         Args: {
           query_embedding: string;
