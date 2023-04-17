@@ -15,7 +15,9 @@ you need, while our custom model helps you better manage and categorize your con
 
 ![cmd+k](src/images/cmdk.jpg)
 
-### 💡 Concepts - Spawning particles is our way of creating something new. With just a few keystrokes, you can create a link, an image, or a long text that you want to refer back to or keep track of.
+### 💡 Concepts
+
+Spawning particles is our way of creating something new. With just a few keystrokes, you can create a link, an image, or a long text that you want to refer back to or keep track of.
 
 - **Spawn** new links, images, and text particles.
 - **Tag** them for easy retrieval later.

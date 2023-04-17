@@ -130,7 +130,7 @@ export function ParticleCardActions({
     <div className="rounded-br-lg opacity-50 hover:opacity-100 rounded-bl-lg border-b border-l border-r text-black dark:text-white mb-4 px-4 py-2 transition bg-gradient-to-br border-particle-600/20 dark:border-particle-400/10">
       <div className="flex flex-row justify-between items-center">
         <div className="flex text-xs text-gray-500">
-          Type: {particleType?.emoji} {particleType?.name}
+          {particleType?.emoji} {particleType?.name}
         </div>
         <div className="flex flex-row items-center justify-center">
           {!particle.is_trashed && (
