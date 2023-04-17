@@ -3,9 +3,9 @@
 import Particles from "./components/particles";
 
 export default function Universe({
-  searchParams: { query },
+  searchParams: { query, tags },
 }: {
-  searchParams: { query: string };
+  searchParams: { query: string, tags: string };
 }) {
-  return <Particles filter={{ search: query }} />;
+  return <Particles filter={{ search: query, tags: tags }} />;
 }

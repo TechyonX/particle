@@ -1,7 +1,15 @@
+import { Database } from "@/lib/database.types";
+import { useSupabase } from "@/lib/supabase-provider";
+import { useAuth } from "@/utils/hooks";
 import { classNames, colorVariants } from "@/utils/misc";
-import { ArchiveBoxIcon, HomeIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  ArchiveBoxIcon,
+  HomeIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const navigation = [
   { name: "Home", icon: HomeIcon, href: "/universe", current: true },
@@ -19,18 +27,30 @@ const navigation = [
   },
 ];
 
-const tags = [
-  { name: "🖌️ #design", color: "pink", count: 10 },
-  { name: "🧑‍💻 #cs", color: "teal", count: 4 },
-  { name: "#linux", color: "indigo", count: 6 },
-  { name: "#macos", color: null, count: 3 },
-  { name: "⚙️ #devops", color: "red", count: 1 },
-  { name: "#javascript", color: null, count: 13 },
-  { name: "#particle", color: "fuchsia", count: 7 },
-];
-
 export default function SideNav() {
   const pathName = usePathname();
+  const { supabase } = useSupabase();
+  const { session } = useAuth();
+  const [tags, setTags] = useState<
+    Database["public"]["Functions"]["get_tags_with_particle_count"]["Returns"]
+  >([]);
+
+  useEffect(() => {
+    const getTags = async () => {
+      if (session) {
+        const { data, error } = await supabase
+          .rpc("get_tags_with_particle_count", { uid: session?.user?.id })
+          .order("particle_count", { ascending: false });
+        if (error) {
+          console.error(error);
+        }
+        if (data) {
+          setTags(data);
+        }
+      }
+    };
+    getTags();
+  }, [supabase, session]);
 
   return (
     <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 dark:border-gray-700 pt-5 pb-4 mr-4">
@@ -74,7 +94,7 @@ export default function SideNav() {
               aria-labelledby="projects-headline"
             >
               {tags.map((tag) => (
-                <a key={tag.name} href="#">
+                <Link key={tag.name} href={`/universe?tags=${tag.id}`}>
                   <span
                     className={classNames(
                       tag.color
@@ -83,12 +103,13 @@ export default function SideNav() {
                       "inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium hover:underline m-0.5"
                     )}
                   >
+                    {"#"}
                     {tag.name}{" "}
                     <span className="bg-neutral-950/5 dark:bg-neutral-500/20 rounded-md px-1 ml-1 text-xs">
-                      {tag.count}
+                      {tag.particle_count}
                     </span>
                   </span>{" "}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

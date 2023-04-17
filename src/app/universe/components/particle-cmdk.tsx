@@ -10,6 +10,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert, { AlertType } from "@/components/alert";
 import { StatusType, StatusTypeItem, statusTypes } from "@/components/cmdk";
 import { hashTagExtractor, urlExtractor } from "@/utils/misc";
+import { Database } from "@/lib/database.types";
+import { Session, SupabaseClient } from "@supabase/supabase-js";
 
 enum ParticleType {
   Text = "text",
@@ -61,7 +63,7 @@ export default function SpawnParticleCmdKPage({
   const { supabase } = useSupabase();
   const { session } = useAuth();
   const urls = urlExtractor(text || "");
-  const hashTags = hashTagExtractor(text || "");
+  const hashTags = hashTagExtractor(text || "", false);
   const type =
     urls?.length === 1
       ? particleTypes[ParticleType.Link]
@@ -85,7 +87,7 @@ export default function SpawnParticleCmdKPage({
         });
       }
     }
-  }, [text]);
+  }, [page, text]);
 
   async function handleSpawn() {
     if (text && text.trim().length > 0) {
@@ -104,10 +106,38 @@ export default function SpawnParticleCmdKPage({
           .select("id");
         if (res.status === 201) {
           if (res.data) {
-            const embeddingRes = await fetch(
-              `/api/embedding/update?id=${res.data[0].id}`,
-              { method: "POST" }
-            );
+            const tagHandler = async () => {
+              const tagIds = await findOrCreateTags(
+                supabase,
+                session,
+                hashTags || []
+              );
+              if (tagIds.length > 0) {
+                return supabase.from("particle_tag").insert(
+                  tagIds.map((id) => ({
+                    particle_id: res.data[0].id,
+                    tag_id: id,
+                  }))
+                );
+              }
+              return null;
+            };
+
+            const values = await Promise.all([
+              tagHandler(),
+              fetch(`/api/embedding/update?id=${res.data[0].id}`, {
+                method: "POST",
+              }),
+            ]);
+
+            const tagRelResponse = values[0];
+            const embeddingRes = values[1];
+            if (tagRelResponse && tagRelResponse.error) {
+              console.log(
+                "Error occured while applying tags",
+                tagRelResponse.error
+              );
+            }
             if (embeddingRes.status !== 200) {
               console.log("Error occured while updating embedding");
             }
@@ -220,4 +250,52 @@ function ParticleProperties({
       </div>
     </div>
   );
+}
+
+async function findOrCreateTags(
+  supabase: SupabaseClient<Database>,
+  session: Session,
+  tags: string[]
+): Promise<string[]> {
+  if (tags.length === 0) {
+    return [];
+  }
+  let tagIds: string[] = [];
+  const existingTags = await supabase
+    .from("tag")
+    .select("*")
+    .eq("user_id", session.user.id);
+
+  const tagsToCreate = tags.filter((tag) => {
+    return !existingTags.data?.some(
+      (t) => t.name.toLowerCase() === tag.toLowerCase()
+    );
+  });
+
+  tags.forEach((tag) => {
+    const matched = existingTags.data?.find(
+      (t) => t.name.toLowerCase() === tag.toLowerCase()
+    );
+    if (matched) {
+      tagIds.push(matched.id);
+    }
+  });
+
+  if (tagsToCreate.length > 0) {
+    const tagRes = await supabase
+      .from("tag")
+      .insert(
+        tagsToCreate.map((tag) => {
+          return {
+            name: tag,
+            user_id: session.user.id,
+          };
+        })
+      )
+      .select("id");
+    if (tagRes.data) {
+      tagIds = [...tagIds, ...tagRes.data.map((t) => t.id)];
+    }
+  }
+  return tagIds;
 }

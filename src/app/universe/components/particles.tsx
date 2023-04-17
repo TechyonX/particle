@@ -12,7 +12,7 @@ interface Filter {
   isPublic?: boolean;
   isArchived?: boolean;
   isTrashed?: boolean;
-  tags?: string[];
+  tags?: string;
 }
 
 export default function Particles({ filter }: { filter?: Filter }) {
@@ -22,6 +22,8 @@ export default function Particles({ filter }: { filter?: Filter }) {
   const [particles, setParticles] = useState<
     Database["public"]["Tables"]["particle"]["Row"][]
   >([]);
+
+  const tagIds = filter?.tags?.split(",");
 
   useEffect(() => {
     const particleChannel = supabase
@@ -127,6 +129,21 @@ export default function Particles({ filter }: { filter?: Filter }) {
           });
         }
       }
+      if (tagIds) {
+        const { data, error } = await supabase
+          .from("particle_tag")
+          .select("*")
+          .in("tag_id", tagIds);
+        if (data) {
+          if (similaritySearch.length > 0) {
+            similaritySearch = similaritySearch.filter((id) =>
+              data.find((item) => item.particle_id === id)
+            );
+          } else {
+            similaritySearch = data.map((item) => item.particle_id);
+          }
+        }
+      }
       let query = supabase
         .from("particle")
         .select(
@@ -152,7 +169,11 @@ export default function Particles({ filter }: { filter?: Filter }) {
       }
       if (similaritySearch.length > 0) {
         query = query.in("id", similaritySearch);
-      } else {
+      }
+      if (
+        similaritySearch.length === 0 ||
+        (filter?.search && filter.search.trim() !== "")
+      ) {
         query = query.order("created_at", { ascending: false });
       }
 
