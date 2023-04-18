@@ -8,7 +8,7 @@ export function urlExtractor(text: string) {
 }
 
 export function hashTagExtractor(text: string, includePrefix: boolean = false) {
-  const hashTags = text.match(/#[a-z0-9]+/gi);
+  const hashTags = text.match(/#[^\s]+/gi);
   if (hashTags && !includePrefix) {
     return hashTags.map((hashTag) => {
       return hashTag.replace("#", "");
