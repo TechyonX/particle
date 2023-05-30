@@ -61,7 +61,6 @@ export default function SpawnParticleCmdKPage({
   }, [page, text]);
 
   async function handleSpawn() {
-    console.log("handleSpawn");
     if (!text || (text && text.trim().length <= 0)) {
       setStatus({
         ...statusTypes[StatusType.Error],
@@ -78,13 +77,11 @@ export default function SpawnParticleCmdKPage({
       body: JSON.stringify({ text: text }),
     });
     if (response.status === 201) {
-      console.log("Particle spawned");
       setStatus({
         ...statusTypes[StatusType.Success],
         message: "Particle spawned",
       });
     } else {
-      console.log(response);
       setStatus({
         ...statusTypes[StatusType.Error],
         message: "Error occured",

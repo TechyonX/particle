@@ -5,14 +5,13 @@ import { hashTagExtractor, urlExtractor } from "@/utils/misc";
 import {
   Session,
   SupabaseClient,
-  createRouteHandlerSupabaseClient,
+  createRouteHandlerClient,
 } from "@supabase/auth-helpers-nextjs";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const supabase = createRouteHandlerSupabaseClient<Database>({
-    headers,
+  const supabase = createRouteHandlerClient<Database>({
     cookies,
   });
   const session = (await supabase.auth.getSession()).data.session;

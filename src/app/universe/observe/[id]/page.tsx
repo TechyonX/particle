@@ -1,13 +1,12 @@
 import { Database } from "@/lib/database.types";
-import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { cookies, headers } from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import { classNames } from "@/utils/misc";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const supabase = createServerComponentSupabaseClient<Database>({
+  const supabase = createServerComponentClient<Database>({
     cookies: cookies,
-    headers: headers,
   });
 
   const { data: particle, error } = await supabase
@@ -34,9 +33,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function Observe({ params }: { params: { id: string } }) {
-  const supabase = createServerComponentSupabaseClient<Database>({
+  const supabase = createServerComponentClient<Database>({
     cookies: cookies,
-    headers: headers,
   });
 
   const { data: particle, error } = await supabase
