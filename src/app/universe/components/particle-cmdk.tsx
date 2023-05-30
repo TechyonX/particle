@@ -77,12 +77,6 @@ export default function SpawnParticleCmdKPage({
       method: "POST",
       body: JSON.stringify({ text: text }),
     });
-    const res = await response.json();
-    if (res.id) {
-      fetch(`/api/embedding/update?id=${res.id}`, {
-        method: "POST",
-      });
-    }
     if (response.status === 201) {
       console.log("Particle spawned");
       setStatus({

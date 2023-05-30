@@ -1,4 +1,5 @@
 import { Database } from "@/lib/database.types";
+import { generateEmbeddings } from "@/utils/ai";
 import { ParticleType, particleTypes } from "@/utils/constants";
 import { hashTagExtractor, urlExtractor } from "@/utils/misc";
 import {
@@ -42,7 +43,8 @@ export async function POST(request: Request) {
     .select("id");
   if (res.status === 201) {
     const errors: string[] = [];
-    if (res.data) {
+    const id = res.data ? res.data[0].id : null;
+    if (id) {
       const tagHandler = async () => {
         const tagIds = await findOrCreateTags(
           supabase,
@@ -52,7 +54,7 @@ export async function POST(request: Request) {
         if (tagIds.length > 0) {
           return supabase.from("particle_tag").insert(
             tagIds.map((id) => ({
-              particle_id: res.data[0].id,
+              particle_id: id,
               tag_id: id,
             }))
           );
@@ -60,7 +62,24 @@ export async function POST(request: Request) {
         return null;
       };
 
-      const tagRelResponse = await tagHandler();
+      const values = await Promise.all([
+        tagHandler(),
+        generateEmbeddings(`${text}`),
+      ]);
+
+      const tagRelResponse = values[0];
+      const embedding = values[1];
+
+      if (embedding) {
+        await supabase
+          .from("particle")
+          // @ts-ignore
+          .update({ embedding: embedding })
+          .match({ id });
+      } else {
+        errors.push("Error occured while generating embeddings");
+      }
+
       if (tagRelResponse && tagRelResponse.error) {
         console.log("Error occured while applying tags", tagRelResponse.error);
         errors.push("Error occured while applying tags");
@@ -69,14 +88,14 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         message: "Particle spawned",
-        id: res.data ? res.data[0].id : null,
-        error: errors,
+        id: id,
+        errors: errors,
       },
       { status: 201 }
     );
   } else {
     return NextResponse.json(
-      { message: "Error occured", error: res },
+      { message: "Error occured", errors: [res.error?.message] },
       { status: 500 }
     );
   }
@@ -93,7 +112,7 @@ async function findOrCreateTags(
   let tagIds: string[] = [];
   const existingTags = await supabase
     .from("tag")
-    .select("*")
+    .select("id, name")
     .eq("user_id", session.user.id);
 
   const tagsToCreate = tags.filter((tag) => {
