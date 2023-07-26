@@ -63,10 +63,9 @@ export default function Particles({ filter }: { filter?: Filter }) {
             case "INSERT":
               if (newParticle) {
                 if (
-                  filter?.search &&
-                  filter.search.trim() !== "" &&
-                  newParticle.is_trashed === filter?.isTrashed &&
-                  newParticle.is_archived === filter?.isArchived
+                  (filter?.search ?? "").trim() === "" &&
+                  newParticle.is_trashed === (filter?.isTrashed ?? false) &&
+                  newParticle.is_archived === (filter?.isArchived ?? false)
                 ) {
                   setParticles([newParticle, ...particles]);
                 }
@@ -74,7 +73,7 @@ export default function Particles({ filter }: { filter?: Filter }) {
               break;
             case "UPDATE":
               if (newParticle) {
-                if (newParticle.is_trashed && !filter?.isTrashed) {
+                if (newParticle.is_trashed && !(filter?.isTrashed ?? false)) {
                   setParticles(
                     particles.filter(
                       (particle) => particle.id !== newParticle?.id
@@ -82,7 +81,7 @@ export default function Particles({ filter }: { filter?: Filter }) {
                   );
                   return;
                 }
-                if (newParticle.is_archived && !filter?.isArchived) {
+                if (newParticle.is_archived && !(filter?.isArchived ?? false)) {
                   setParticles(
                     particles.filter(
                       (particle) => particle.id !== newParticle?.id

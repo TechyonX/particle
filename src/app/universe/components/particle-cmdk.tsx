@@ -4,44 +4,17 @@ import {
   HashtagIcon,
   TagIcon,
 } from "@heroicons/react/24/outline";
-import { useSupabase } from "@/lib/supabase-provider";
-import { useAuth } from "@/utils/hooks";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert, { AlertType } from "@/components/alert";
 import { StatusType, StatusTypeItem, statusTypes } from "@/components/cmdk";
 import { hashTagExtractor, urlExtractor } from "@/utils/misc";
 import { Database } from "@/lib/database.types";
 import { Session, SupabaseClient } from "@supabase/supabase-js";
-
-enum ParticleType {
-  Text = "text",
-  Link = "link",
-  Image = "image",
-}
-
-interface ParticleTypeRow {
-  id: number;
-  name: string;
-  emoji?: string;
-}
-
-const particleTypes: { [key: string]: ParticleTypeRow } = {
-  [ParticleType.Link]: {
-    id: 1,
-    name: "URL",
-    emoji: "🔗",
-  },
-  [ParticleType.Image]: {
-    id: 2,
-    name: "Image",
-    emoji: "🖼️",
-  },
-  [ParticleType.Text]: {
-    id: 3,
-    name: "Text",
-    emoji: "💭",
-  },
-};
+import {
+  ParticleType,
+  ParticleTypeRow,
+  particleTypes,
+} from "@/utils/constants";
 
 export default function SpawnParticleCmdKPage({
   id,
@@ -60,8 +33,6 @@ export default function SpawnParticleCmdKPage({
   setStatus: Dispatch<SetStateAction<StatusTypeItem>>;
   page: "root" | "particles" | "spawn";
 }) {
-  const { supabase } = useSupabase();
-  const { session } = useAuth();
   const urls = urlExtractor(text || "");
   const hashTags = hashTagExtractor(text || "", false);
   const type =
@@ -83,90 +54,38 @@ export default function SpawnParticleCmdKPage({
       } else {
         setStatus({
           ...statusTypes[StatusType.Error],
-          message: "Particle cannot be empty",
+          message: "Please enter a text to spawn a particle",
         });
       }
     }
   }, [page, text]);
 
   async function handleSpawn() {
-    if (text && text.trim().length > 0) {
-      if (session) {
-        setStatus({
-          ...statusTypes[StatusType.Loading],
-          message: "Spawning particle...",
-        });
-        const res = await supabase
-          .from("particle")
-          .insert({
-            content: text,
-            type: type.id,
-            user_id: session.user.id,
-          })
-          .select("id");
-        if (res.status === 201) {
-          if (res.data) {
-            const tagHandler = async () => {
-              const tagIds = await findOrCreateTags(
-                supabase,
-                session,
-                hashTags || []
-              );
-              if (tagIds.length > 0) {
-                return supabase.from("particle_tag").insert(
-                  tagIds.map((id) => ({
-                    particle_id: res.data[0].id,
-                    tag_id: id,
-                  }))
-                );
-              }
-              return null;
-            };
-
-            const values = await Promise.all([
-              tagHandler(),
-              fetch(`/api/embedding/update?id=${res.data[0].id}`, {
-                method: "POST",
-              }),
-            ]);
-
-            const tagRelResponse = values[0];
-            const embeddingRes = values[1];
-            if (tagRelResponse && tagRelResponse.error) {
-              console.log(
-                "Error occured while applying tags",
-                tagRelResponse.error
-              );
-            }
-            if (embeddingRes.status !== 200) {
-              console.log("Error occured while updating embedding");
-            }
-          }
-          console.log("Particle spawned");
-          setStatus({
-            ...statusTypes[StatusType.Success],
-            message: "Particle spawned",
-          });
-        } else {
-          console.log(res);
-          // setAlert({ type: AlertType.Error, message: "Error occured" });
-          setStatus({
-            ...statusTypes[StatusType.Error],
-            message: "Error occured",
-          });
-          return;
-        }
-      }
-    } else {
-      // setAlert({
-      //   type: AlertType.Warning,
-      //   message: "Particle cannot be empty",
-      // });
+    if (!text || (text && text.trim().length <= 0)) {
       setStatus({
         ...statusTypes[StatusType.Error],
-        message: "Particle cannot be empty",
+        message: "Please enter a text to spawn a particle",
       });
       return;
+    }
+    setStatus({
+      ...statusTypes[StatusType.Loading],
+      message: "Spawning particle...",
+    });
+    const response = await fetch("/api/universe/spawn", {
+      method: "POST",
+      body: JSON.stringify({ text: text }),
+    });
+    if (response.status === 201) {
+      setStatus({
+        ...statusTypes[StatusType.Success],
+        message: "Particle spawned",
+      });
+    } else {
+      setStatus({
+        ...statusTypes[StatusType.Error],
+        message: "Error occured",
+      });
     }
     onSpawn && onSpawn();
   }

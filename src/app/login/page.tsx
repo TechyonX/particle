@@ -37,7 +37,7 @@ export default function Page() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
       options: {
-        redirectTo: window.location.origin + "/universe",
+        redirectTo: `${location.origin}/auth/callback`,
       },
     });
     if (!handleError(error)) {
@@ -57,7 +57,7 @@ export default function Page() {
     const { data, error } = await supabase.auth.signInWithOtp({
       email: email,
       options: {
-        emailRedirectTo: window.location.origin + "/universe",
+        emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
     await new Promise((resolve) => setTimeout(resolve, 1000));

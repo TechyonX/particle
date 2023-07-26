@@ -1,14 +1,13 @@
 import { Database } from "@/lib/database.types";
 import { generateEmbeddings } from "@/utils/ai";
-import { createRouteHandlerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { cookies, headers } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
 
-  const supabase = createRouteHandlerSupabaseClient<Database>({
-    headers,
+  const supabase = createRouteHandlerClient<Database>({
     cookies,
   });
   const session = await supabase.auth.getSession();

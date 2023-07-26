@@ -1,7 +1,7 @@
 import { Database } from "@/lib/database.types";
 import { generateEmbeddings } from "@/utils/ai";
-import { createRouteHandlerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { cookies, headers } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 export const revalidate = 0;
 
@@ -11,8 +11,7 @@ export async function GET(request: Request) {
   const similarity = searchParams.get("similarity");
   const limit = searchParams.get("limit");
 
-  const supabase = createRouteHandlerSupabaseClient<Database>({
-    headers,
+  const supabase = createRouteHandlerClient<Database>({
     cookies,
   });
   const session = await supabase.auth.getSession();

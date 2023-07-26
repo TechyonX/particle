@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
 import type { SupabaseClient } from "@supabase/auth-helpers-nextjs";
@@ -19,7 +19,7 @@ export default function SupabaseProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [supabase] = useState(() => createBrowserSupabaseClient<Database>());
+  const [supabase] = useState(() => createClientComponentClient<Database>());
   const [particleTypes, setParticleTypes] = useState<
     Database["public"]["Tables"]["type"]["Row"][]
   >([]);
