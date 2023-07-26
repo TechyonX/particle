@@ -52,9 +52,9 @@ export async function POST(request: Request) {
         );
         if (tagIds.length > 0) {
           return supabase.from("particle_tag").insert(
-            tagIds.map((id) => ({
+            tagIds.map((tag_id) => ({
               particle_id: id,
-              tag_id: id,
+              tag_id: tag_id,
             }))
           );
         }
